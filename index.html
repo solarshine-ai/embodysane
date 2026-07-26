@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Embodying Sane | Relationship Empowerment & Support</title>
+<meta name="description" content="Embodying Sane helps individuals navigate, track, and heal from complex relationships with tools, diary logs, and boundary setting exercises."/>
+<meta name="keywords" content="relationship self discovery quiz, attachment style quiz, love language test, gaslighting test, am I being gaslit, toxic relationship test, people pleaser test, boundary test, manipulation patterns, emotional abuse awareness, trauma healing, relationship pattern analyzer"/>
+<meta name="author" content="Embody-Tech-AI LLC"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://embodysane.com"/>
+<!-- Open Graph for social sharing -->
+<meta property="og:title" content="Embodying Sane | Relationship & Self-Discovery Quizzes"/>
+<meta property="og:description" content="Take our relationship pattern analyzer to identify manipulation patterns. Free attachment style quiz, love language test, gaslighting test and more."/>
+<meta property="og:url" content="https://embodysane.com"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Embodying Sane"/>
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Embodying Sane — Know Yourself. See the Pattern. Reclaim Your Life."/>
+<meta name="twitter:description" content="AI-powered relationship awareness app. Self tests, conversation analyzer, diary and vault. Freedom starts with seeing clearly."/>
+<!-- Schema -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Embodying Sane","url":"https://embodysane.com","description":"AI-powered self discovery and relationship awareness app","applicationCategory":"HealthApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"3.69","priceCurrency":"USD","description":"Monthly subscription after 3-day free trial"}}
+</script>
+<script type="importmap">
+{"imports":{"gotrue-js":"/assets/vendor/gotrue.js"}}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:'Georgia','Times New Roman',serif;background:#07091a;color:#f0eafa;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.2);border-radius:2px}
+button{font-family:'Georgia','Times New Roman',serif;cursor:pointer}
+textarea,input{font-family:'Georgia','Times New Roman',serif;outline:none}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+#app{min-height:100vh;background:radial-gradient(ellipse at 25% 0%,#3d1545 0%,#07091a 50%),radial-gradient(ellipse at 80% 100%,#1a0a2e 0%,#07091a 60%);position:relative}
+.screen{display:none;padding:28px 20px 100px;animation:fadeUp 0.4s ease;max-width:480px;margin:0 auto}
+.screen.active{display:block}
+.triangle{position:fixed;bottom:-80px;right:-80px;width:0;height:0;border-left:220px solid transparent;border-bottom:220px solid rgba(61,21,69,0.25);pointer-events:none;z-index:0}
+.card{background:rgba(13,18,48,0.75);border:1px solid rgba(201,168,76,0.12);border-radius:20px;padding:24px 20px;backdrop-filter:blur(20px);box-shadow:0 8px 40px rgba(0,0,0,0.4),inset 0 1px 0 rgba(201,168,76,0.08);margin-bottom:14px}
+.btn{width:100%;padding:15px;border:none;border-radius:12px;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;transition:all 0.25s ease;display:block;text-align:center;margin-bottom:10px}
+.btn-gold{background:linear-gradient(135deg,#6b2580,#c9a84c);color:#07091a}
+.btn-outline{background:transparent;border:1px solid #c9a84c;color:#c9a84c}
+.btn-ghost{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#7a6f98}
+.btn-danger{background:linear-gradient(135deg,#8b1a1a,#c94c6a);color:#f0eafa}
+.btn-sm{width:auto;padding:8px 16px;font-size:10px;letter-spacing:2px;display:inline-block;margin-bottom:0}
+.btn:disabled{opacity:0.4;cursor:not-allowed}
+.tag{padding:4px 11px;border-radius:20px;border:1px solid #6b2580;color:#e8c96a;font-size:10px;letter-spacing:1.5px;background:rgba(107,37,128,0.2);text-transform:uppercase;display:inline-block}
+.lbl{color:#7a6f98;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;display:block}
+.divider{width:36px;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);margin:14px auto}
+#nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(7,9,26,0.94);backdrop-filter:blur(20px);border-top:1px solid rgba(201,168,76,0.12);padding:10px 0 14px}
+#nav .inner{display:flex;justify-content:space-around;max-width:480px;margin:0 auto}
+.nav-btn{background:none;border:none;padding:4px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;color:#7a6f98;transition:color 0.2s ease;min-width:52px}
+.nav-btn.active{color:#c9a84c}
+.nav-btn .icon{font-size:17px;line-height:1}
+.nav-btn .nav-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:#c9a84c;margin-top:1px}
+#trial-banner{background:linear-gradient(90deg,rgba(61,21,69,0.9),rgba(107,37,128,0.6));border-bottom:1px solid rgba(201,168,76,0.22);padding:10px 20px;display:none;justify-content:space-between;align-items:center;cursor:pointer}
+.progress-wrap{margin-bottom:24px}
+.progress-meta{display:flex;justify-content:space-between;margin-bottom:8px}
+.progress-track{width:100%;height:2px;background:rgba(255,255,255,0.06);border-radius:1px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#6b2580,#c9a84c);border-radius:1px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1)}
+.opt{padding:13px 16px;border-radius:12px;text-align:left;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.02);color:#9d93b8;transition:all 0.2s ease;display:flex;align-items:center;gap:12px;width:100%;margin-bottom:10px}
+.opt.selected{border-color:#c9a84c;background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(107,37,128,0.2));color:#e8c96a}
+.opt-dot{width:15px;height:15px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);background:transparent;flex-shrink:0;transition:all 0.2s ease}
+.opt.selected .opt-dot{border-color:#c9a84c;background:#c9a84c}
+.flag-item{background:rgba(13,18,48,0.75);border:1px solid rgba(201,168,76,0.12);border-radius:14px;padding:15px 17px;cursor:pointer;transition:all 0.25s ease;margin-bottom:10px}
+.upload-zone{border:1.5px dashed rgba(201,168,76,0.22);border-radius:14px;padding:42px 20px;text-align:center;cursor:pointer;margin-bottom:16px}
+.risk-badge{display:inline-block;padding:8px 24px;border-radius:30px;font-size:17px;letter-spacing:2px;margin-bottom:14px}
+#splash{position:fixed;inset:0;background:#07091a;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;transition:opacity 0.5s ease}
+#splash.hidden{opacity:0;pointer-events:none}
+.dot-loader{display:flex;gap:7px;margin-top:48px}
+.dot-loader span{width:6px;height:6px;border-radius:50%;background:#c9a84c;animation:pulse 1.2s ease infinite}
+.dot-loader span:nth-child(2){animation-delay:0.2s}
+.dot-loader span:nth-child(3){animation-delay:0.4s}
+.back-btn{background:none;border:none;color:#7a6f98;font-size:13px;letter-spacing:1px;margin-bottom:24px;display:flex;align-items:center;gap:6px;padding:0}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px}
+.stat-box{background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.12);border-radius:14px;padding:12px 8px;text-align:center}
+.hero{background:linear-gradient(135deg,#3d1545 0%,#1a0d35 60%,#0d1230 100%);border:1px solid rgba(201,168,76,0.22);border-radius:20px;padding:24px 20px;margin-bottom:14px;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(107,37,128,0.2)}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.feat-card{background:rgba(13,18,48,0.75);border:1px solid rgba(201,168,76,0.12);border-radius:16px;padding:16px 14px;cursor:pointer}
+.pattern-item{border-left:2px solid #c9a84c;padding-left:13px;margin-bottom:14px}
+.mood-btn{flex:1;padding:10px 4px;border-radius:10px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.02);font-size:11px;transition:all 0.2s ease}
+.legal-section{background:rgba(13,18,48,0.75);border:1px solid rgba(201,168,76,0.12);border-radius:16px;padding:16px 18px;margin-bottom:12px}
+.spin-wrap{animation:spin 4s linear infinite;display:inline-block}
+/* TEST HUB */
+.test-card{background:rgba(13,18,48,0.75);border:1px solid rgba(201,168,76,0.12);border-radius:16px;padding:18px 16px;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;gap:14px;transition:all 0.2s ease}
+.test-card:hover{border-color:rgba(201,168,76,0.3)}
+.test-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+/* DIARY ENTRIES */
+.diary-entry{background:rgba(13,18,48,0.75);border:1px solid rgba(201,168,76,0.12);border-radius:20px;padding:0;margin-bottom:12px;overflow:hidden;transition:all 0.3s ease}
+.diary-header{padding:16px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start}
+.diary-body{padding:0 18px;max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s ease}
+.diary-body.open{max-height:600px;padding:0 18px 18px}
+/* VAULT */
+.vault-entry{background:rgba(13,18,48,0.75);border:1px solid rgba(201,168,76,0.12);border-radius:16px;padding:16px 18px;margin-bottom:12px}
+.vault-cat{display:inline-block;padding:3px 10px;border-radius:10px;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+textarea{resize:vertical}
+#paywall{display:none;padding:40px 20px 100px;max-width:480px;margin:0 auto;text-align:center;animation:fadeUp 0.4s ease}
+#file-protocol-banner{display:none;background:linear-gradient(90deg,rgba(201,76,106,0.9),rgba(224,122,48,0.8));border-bottom:1px solid rgba(201,168,76,0.3);padding:14px 20px;position:fixed;top:0;left:0;right:0;z-index:200;animation:fadeUp 0.4s ease}
+#file-protocol-banner .banner-inner{max-width:480px;margin:0 auto}
+#network-badge{position:fixed;top:0;right:12px;z-index:201;padding:5px 12px;border-radius:0 0 8px 8px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;transition:all 0.3s ease;display:none}
+#network-badge.offline{display:block;background:rgba(201,76,106,0.9);color:#f0eafa}
+#network-badge.online{display:block;background:rgba(76,201,168,0.9);color:#07091a}
+#stripe-pricing-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:300;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);align-items:center;justify-content:center;animation:fadeUp 0.3s ease;padding:20px;overflow-y:auto}
+#stripe-pricing-overlay.active{display:flex}
+#stripe-pricing-overlay .spm-box{max-width:500px;width:100%;margin:auto;padding:40px;background:#fff;border:1px solid #eaeaea;border-radius:8px;text-align:center;font-family:sans-serif;box-shadow:0 4px 20px rgba(0,0,0,0.05);position:relative}
+#stripe-pricing-overlay .spm-close{position:absolute;top:14px;right:18px;background:none;border:none;font-size:22px;color:#999;cursor:pointer;line-height:1}
+#stripe-pricing-overlay .spm-close:hover{color:#333}
+#stripe-pricing-overlay .spm-heading{font-size:1.8rem;font-weight:400;color:#111;margin-bottom:10px;letter-spacing:-0.5px}
+#stripe-pricing-overlay .spm-sub{font-size:1rem;color:#666;margin-bottom:30px;line-height:1.5}
+#stripe-pricing-overlay .spm-price-card{background:#f9f9f9;padding:20px;border-radius:6px;margin-bottom:30px}
+#stripe-pricing-overlay .spm-price{font-size:2.5rem;font-weight:600;color:#111}
+#stripe-pricing-overlay .spm-period{font-size:1rem;color:#666}
+#stripe-pricing-overlay .spm-cancel{font-size:0.85rem;color:#888;margin-top:5px;margin-bottom:0}
+#stripe-pricing-overlay .spm-benefits{text-align:left;list-style:none;padding:0;margin:0 0 35px 20px;color:#444;font-size:0.95rem;line-height:2}
+#stripe-pricing-overlay .spm-benefits strong{color:#222}
+#stripe-pricing-overlay .spm-cta{width:100%;padding:14px;background:#111;color:#fff;border:none;border-radius:5px;font-size:1rem;font-weight:500;cursor:pointer;transition:background 0.2s}
+#stripe-pricing-overlay .spm-cta:hover{background:#333}
+.auth-overlay{position:fixed;inset:0;background:rgba(3,4,14,0.82);backdrop-filter:blur(14px);z-index:1200;display:none;align-items:center;justify-content:center;padding:20px}
+.auth-overlay.active{display:flex}
+.auth-panel{width:min(100%,440px);max-height:92vh;overflow-y:auto;background:linear-gradient(155deg,rgba(22,17,48,0.98),rgba(7,9,26,0.99));border:1px solid rgba(201,168,76,0.28);border-radius:24px;padding:28px 22px;box-shadow:0 28px 90px rgba(0,0,0,0.65),inset 0 1px 0 rgba(255,255,255,0.05);position:relative}
+.auth-close{position:absolute;right:16px;top:14px;background:none;border:none;color:#7a6f98;font-size:24px;line-height:1;padding:4px}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.06);padding:5px;border-radius:12px;margin:20px 0}
+.auth-tab{background:transparent;border:none;border-radius:8px;padding:10px;color:#7a6f98;font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.auth-tab.active{background:linear-gradient(135deg,rgba(107,37,128,0.55),rgba(201,168,76,0.2));color:#e8c96a}
+.auth-input{width:100%;background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.09);border-radius:11px;padding:13px 14px;color:#f0eafa;font-size:14px;margin-bottom:11px}
+.auth-input:focus{border-color:#c9a84c;box-shadow:0 0 0 3px rgba(201,168,76,0.08)}
+.auth-or{display:flex;align-items:center;gap:12px;color:#5f5678;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin:16px 0}
+.auth-or:before,.auth-or:after{content:"";height:1px;flex:1;background:rgba(255,255,255,0.07)}
+.account-chip{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.22);border-radius:20px;color:#c9a84c;padding:7px 12px;font-size:9px;letter-spacing:1.5px;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<div id="auth-overlay" class="auth-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+  <div class="auth-panel">
+    <button class="auth-close" onclick="closeAuthModal()" aria-label="Close account window">×</button>
+    <span class="lbl">Your private account</span>
+    <h2 id="auth-title" style="font-size:24px;font-weight:400;margin-bottom:8px">Carry your progress with you</h2>
+    <p style="color:#9d93b8;font-size:13px;line-height:1.7">Choose a password or a secure email link. Either option keeps your diary, moods, Vault, tests, and access connected across devices.</p>
+    <div class="auth-tabs">
+      <button id="auth-tab-login" class="auth-tab active" onclick="setAuthMode('login')">Sign In</button>
+      <button id="auth-tab-signup" class="auth-tab" onclick="setAuthMode('signup')">Create Account</button>
+    </div>
+    <div id="auth-current-user" style="display:none">
+      <div class="card" style="padding:18px;margin-bottom:14px">
+        <span class="lbl">Signed in as</span>
+        <p data-account-email style="font-size:14px;color:#f0eafa;overflow-wrap:anywhere"></p>
+      </div>
+      <button class="btn btn-outline" onclick="showPasswordReset()">Set or Change Password</button>
+      <button class="btn btn-ghost" onclick="signOut()">Log Out</button>
+    </div>
+    <div id="auth-main-forms">
+      <form onsubmit="submitPasswordAuth(event)">
+        <div id="auth-name-row" style="display:none"><input id="auth-name" class="auth-input" type="text" autocomplete="name" placeholder="Name (optional)" maxlength="80"></div>
+        <input id="auth-email" class="auth-input" type="email" autocomplete="email" placeholder="Email address" required>
+        <input id="auth-password" class="auth-input" type="password" autocomplete="current-password" placeholder="Password" minlength="8" required>
+        <button id="auth-password-submit" class="btn btn-gold" type="submit">Sign In</button>
+      </form>
+      <button id="auth-forgot" onclick="sendPasswordReset()" style="background:none;border:none;color:#9d93b8;font-size:11px;text-decoration:underline;width:100%;margin-top:2px">Forgot your password?</button>
+      <div class="auth-or">or use no password</div>
+      <form onsubmit="submitMagicLink(event)">
+        <button id="auth-magic-submit" class="btn btn-outline" type="submit">Email Me a Sign-In Link</button>
+      </form>
+    </div>
+    <form id="auth-reset-form" onsubmit="submitNewPassword(event)" style="display:none">
+      <input id="auth-new-password" class="auth-input" type="password" autocomplete="new-password" placeholder="New password" minlength="8" required>
+      <button class="btn btn-gold" type="submit">Save New Password</button>
+    </form>
+    <p id="auth-message" style="display:none;font-size:12px;line-height:1.6;text-align:center;margin-top:14px"></p>
+    <p style="color:#5f5678;font-size:10px;line-height:1.6;text-align:center;margin-top:16px">Your account email connects your Stripe subscription and private app data.</p>
+  </div>
+</div>
+
+<div id="file-protocol-banner">
+  <div class="banner-inner">
+    <p style="color:#f0eafa;font-size:13px;font-weight:700;margin-bottom:6px">You're viewing this from a local file</p>
+    <p style="color:#f0eafa;font-size:12px;line-height:1.6;opacity:0.9;margin-bottom:10px">Some features (Conversation Analyzer, Founder Access) require an internet connection and a web server. Visit <strong>embodysane.com</strong> for the full experience, or use the <strong>Download My Data</strong> button in Settings to save your data.</p>
+    <button onclick="this.parentElement.parentElement.style.display='none'" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 14px;color:#f0eafa;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Dismiss</button>
+  </div>
+</div>
+<div id="network-badge">Offline</div>
+
+<div id="splash">
+  <div style="animation:spin 25s linear infinite;margin-bottom:28px" id="splash-sun"></div>
+  <h1 style="color:#f0eafa;font-size:28px;font-weight:400;letter-spacing:2px;margin-bottom:6px">Embodying Sane</h1>
+  <p style="color:#f0eafa;font-size:12px;letter-spacing:2px;margin-bottom:8px">Sunshine Lamar</p>
+  <p style="color:#c9a84c;font-size:10px;letter-spacing:4px;text-transform:uppercase">BELIEVE · TRANSFORM · CREATE</p>
+  <div class="dot-loader"><span></span><span></span><span></span></div>
+</div>
+
+<div id="app">
+<div class="triangle"></div>
+<div id="trial-banner" onclick="openStripeCheckout()">
+  <span style="color:#e8c96a;font-size:11px;letter-spacing:1px" id="trial-text">Free Trial — 3 days left</span>
+  <span style="color:#c9a84c;font-size:10px;letter-spacing:2px;text-transform:uppercase;border:1px solid #c9a84c;padding:4px 10px;border-radius:10px">Subscribe $3.69/month</span>
+</div>
+
+<!-- PAYWALL -->
+<div id="paywall">
+  <div style="display:flex;justify-content:center;margin-bottom:20px" id="paywall-sun"></div>
+  <p style="color:#c9a84c;font-size:10px;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px">BELIEVE · TRANSFORM · CREATE</p>
+  <h2 style="color:#f0eafa;font-size:22px;font-weight:400;margin-bottom:8px">Your Free Trial Has Ended</h2>
+  <div class="divider"></div>
+  <p style="color:#9d93b8;font-size:14px;line-height:1.8;margin-bottom:28px">Everything you've logged is still here. Subscribe to keep full access.</p>
+  <div class="card" style="text-align:left;margin-bottom:20px">
+    <span class="lbl">What you get</span>
+    <div style="display:flex;gap:10px;margin-bottom:10px"><span style="color:#4cc9a8;font-size:13px;flex-shrink:0">✓</span><p style="color:#9d93b8;font-size:13px;line-height:1.6">5 self-discovery tests — know yourself deeply</p></div>
+    <div style="display:flex;gap:10px;margin-bottom:10px"><span style="color:#4cc9a8;font-size:13px;flex-shrink:0">✓</span><p style="color:#9d93b8;font-size:13px;line-height:1.6">Unlimited Conversation Analyzer — photo or text</p></div>
+    <div style="display:flex;gap:10px;margin-bottom:10px"><span style="color:#4cc9a8;font-size:13px;flex-shrink:0">✓</span><p style="color:#9d93b8;font-size:13px;line-height:1.6">Full Diary with mood tracking & expandable entries</p></div>
+    <div style="display:flex;gap:10px;margin-bottom:10px"><span style="color:#4cc9a8;font-size:13px;flex-shrink:0">✓</span><p style="color:#9d93b8;font-size:13px;line-height:1.6">The Vault — store wins, memories & gratitude</p></div>
+    <div style="display:flex;gap:10px"><span style="color:#4cc9a8;font-size:13px;flex-shrink:0">✓</span><p style="color:#9d93b8;font-size:13px;line-height:1.6">Pattern Timeline — watch yourself heal</p></div>
+  </div>
+  <p style="color:#f0eafa;font-size:26px;margin-bottom:4px">$3.69 <span style="font-size:14px;color:#7a6f98">/ month</span></p>
+  <p style="color:#7a6f98;font-size:11px;letter-spacing:1px;margin-bottom:20px">Cancel anytime</p>
+  <button class="btn btn-gold" onclick="openStripeCheckout()">Subscribe Now</button>
+  <div style="display:flex;justify-content:center;gap:20px;margin-top:16px">
+    <button onclick="goTo('privacy')" style="background:none;border:none;color:#7a6f98;font-size:11px;text-decoration:underline">Privacy Policy</button>
+    <button onclick="goTo('refund')" style="background:none;border:none;color:#7a6f98;font-size:11px;text-decoration:underline">Refund Policy</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="screen" id="screen-home">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+    <div><span class="lbl" style="margin-bottom:4px">Sunshine Lamar</span><h1 style="color:#f0eafa;font-size:22px;font-weight:400">Embodying Sane</h1></div>
+    <div style="display:flex;align-items:center;gap:10px"><button id="account-button" class="account-chip" onclick="showAuthModal('login')">Sign in</button><div id="home-sun"></div></div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-box"><div style="color:#e8c96a;font-size:22px;font-weight:400" id="stat-tests">0</div><div style="color:#7a6f98;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-top:2px">Tests</div></div>
+    <div class="stat-box"><div style="color:#e8c96a;font-size:22px;font-weight:400" id="stat-analyses">0</div><div style="color:#7a6f98;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-top:2px">Analyses</div></div>
+    <div class="stat-box"><div style="color:#e8c96a;font-size:22px;font-weight:400" id="stat-journal">0</div><div style="color:#7a6f98;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-top:2px">Journal</div></div>
+  </div>
+  <div class="hero" onclick="goTo('tests')">
+    <div style="position:absolute;right:-18px;top:-18px;opacity:0.12" id="hero-sun"></div>
+    <span class="tag" style="border-color:#c9a84c">Discover Yourself</span>
+    <h2 style="color:#f0eafa;font-size:20px;font-weight:400;margin:12px 0 8px">Self Discovery Tests</h2>
+    <p style="color:#9d93b8;font-size:13px;line-height:1.6;margin-bottom:18px">5 tests to know yourself deeply. Love language, attachment style, boundaries and more.</p>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6b2580,#c9a84c);display:flex;align-items:center;justify-content:center;border:none"><span style="color:#07091a;font-size:11px">▶</span></div>
+      <span style="color:#c9a84c;font-size:11px;letter-spacing:2px;text-transform:uppercase">Explore</span>
+    </div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card" onclick="goTo('analyzer')"><span style="font-size:18px;color:#6b2580;display:block;margin-bottom:8px">⟐</span><div style="color:#f0eafa;font-size:13px;margin-bottom:4px">Conversation Analyzer</div><div style="color:#7a6f98;font-size:10px;letter-spacing:1px">AI reads patterns</div></div>
+    <div class="feat-card" onclick="goTo('diary')"><span style="font-size:18px;color:#c9a84c;display:block;margin-bottom:8px">✦</span><div style="color:#f0eafa;font-size:13px;margin-bottom:4px">Diary</div><div style="color:#7a6f98;font-size:10px;letter-spacing:1px" id="diary-count-home">0 entries</div></div>
+    <div class="feat-card" onclick="goTo('vault')"><span style="font-size:18px;color:#4cc9a8;display:block;margin-bottom:8px">◈</span><div style="color:#f0eafa;font-size:13px;margin-bottom:4px">The Vault</div><div style="color:#7a6f98;font-size:10px;letter-spacing:1px">Your wins & memories</div></div>
+    <div class="feat-card" onclick="goTo('mirror')"><span style="font-size:18px;color:#e07a30;display:block;margin-bottom:8px">◑</span><div style="color:#f0eafa;font-size:13px;margin-bottom:4px">Mirror</div><div style="color:#7a6f98;font-size:10px;letter-spacing:1px">Reflect inward</div></div>
+  </div>
+  <div class="card" style="text-align:center;padding:18px 20px">
+    <span class="lbl">Daily Reflection</span>
+    <p style="color:#f0eafa;font-size:14px;font-style:italic;line-height:1.75" id="daily-quote"></p>
+    <p style="color:#c9a84c;font-size:11px;margin-top:8px" id="daily-author"></p>
+  </div>
+  <div class="card" style="text-align:center;padding:32px 20px;margin-top:12px;background:linear-gradient(135deg,rgba(107,37,128,0.12),rgba(201,168,76,0.08));border:1px solid rgba(201,168,76,0.18)">
+    <h2 style="color:#f0eafa;font-size:20px;font-weight:400;letter-spacing:-0.3px;margin-bottom:8px">The Knowledge is yours.</h2>
+    <p style="color:#9d93b8;font-size:13px;line-height:1.7;margin-bottom:20px">Join our inner circle for weekly self-discovery metrics, pattern analysis, and tools for trauma healing.</p>
+    <div id="email-signup-form" style="display:flex;gap:8px;max-width:360px;margin:0 auto">
+      <input id="signup-email" type="email" placeholder="Enter your email" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:12px 14px;color:#f0eafa;font-size:13px"/>
+      <button onclick="submitSignup()" style="background:linear-gradient(135deg,#6b2580,#c9a84c);border:none;border-radius:12px;padding:12px 20px;color:#07091a;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap">Join</button>
+    </div>
+    <p id="signup-msg" style="color:#4cc9a8;font-size:12px;margin-top:10px;display:none"></p>
+  </div>
+</div>
+
+<!-- TESTS HUB -->
+<div class="screen" id="screen-tests">
+  <span class="lbl">Know Yourself</span>
+  <h2 style="color:#f0eafa;font-size:20px;font-weight:400;margin-bottom:22px">Self Discovery Tests</h2>
+  <div id="tests-list"></div>
+</div>
+
+<!-- TEST FLOW -->
+<div class="screen" id="screen-test-flow">
+  <div id="tf-intro">
+    <button class="back-btn" onclick="goTo('tests')">← Tests</button>
+    <div class="card" style="text-align:center">
+      <div style="display:flex;justify-content:center;margin-bottom:20px" id="tf-intro-sun"></div>
+      <span class="tag" id="tf-tag" style="border-color:#c9a84c"></span>
+      <h2 style="color:#f0eafa;font-size:22px;font-weight:400;margin:16px 0 8px" id="tf-title"></h2>
+      <div class="divider"></div>
+      <p style="color:#9d93b8;font-size:14px;line-height:1.8;margin-bottom:28px" id="tf-desc"></p>
+      <button class="btn btn-gold" onclick="startTestFlow()">Begin Test</button>
+    </div>
+  </div>
+  <div id="tf-quiz" style="display:none">
+    <button class="back-btn" onclick="goTo('tests')">← Tests</button>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span style="color:#7a6f98;font-size:10px;letter-spacing:2px;text-transform:uppercase" id="tf-test-name"></span>
+        <span style="color:#c9a84c;font-size:11px" id="tf-counter"></span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="tf-progress"></div></div>
+    </div>
+    <div class="card" id="tf-card">
+      <span class="tag" id="tf-q-tag"></span>
+      <p style="color:#f0eafa;font-size:17px;line-height:1.75;margin:18px 0 24px;min-height:88px" id="tf-q-text"></p>
+      <div id="tf-opts"></div>
+      <button class="btn btn-gold" id="tf-next-btn" onclick="nextTF()" disabled style="margin-top:12px">Next →</button>
+    </div>
+  </div>
+  <div id="tf-result" style="display:none">
+    <button class="back-btn" onclick="goTo('tests')">← Tests</button>
+    <div class="card" style="text-align:center">
+      <div style="display:flex;justify-content:center;margin-bottom:14px" id="tf-result-sun"></div>
+      <div id="tf-result-icon" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px"></div>
+      <h2 id="tf-result-level" style="font-weight:400;font-size:20px;letter-spacing:2px"></h2>
+      <div class="divider" id="tf-result-div"></div>
+      <p id="tf-result-msg" style="font-size:14px;line-height:1.8;margin-bottom:16px;color:#f0eafa"></p>
+      <p id="tf-result-detail" style="font-size:13px;line-height:1.75;color:#9d93b8;margin-bottom:22px"></p>
+      <div id="tf-result-tags" style="margin-bottom:20px"></div>
+      <button class="btn btn-gold" onclick="saveTFResult()">Save to Diary</button>
+      <button class="btn btn-outline" onclick="retakeTF()">Retake Test</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONVERSATION ANALYZER -->
+<div class="screen" id="screen-analyzer">
+  <span class="lbl">AI-Powered</span>
+  <h2 style="color:#f0eafa;font-size:20px;font-weight:400;margin-bottom:22px">Conversation Analyzer</h2>
+  <div id="analyzer-pick">
+    <div class="card" style="text-align:center;padding:30px 20px">
+      <div style="display:flex;justify-content:center;margin-bottom:16px" id="analyzer-sun"></div>
+      <p style="color:#9d93b8;font-size:14px;line-height:1.75;margin-bottom:26px">Upload a screenshot or paste your conversation. Tell us what's happening and our AI will identify manipulation patterns.</p>
+      <button class="btn btn-gold" onclick="showAnalyzerMode('photo')">📷  Upload Screenshot</button>
+      <button class="btn btn-outline" onclick="showAnalyzerMode('paste')">Paste Conversation Text</button>
+    </div>
+  </div>
+  <div id="analyzer-photo" style="display:none">
+    <div class="card">
+      <button class="back-btn" onclick="resetAnalyzer()">← Back</button>
+      <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="handlePhoto(event)"/>
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('photo-input').click()">
+        <p style="font-size:28px;margin-bottom:10px">📷</p>
+        <p style="color:#c9a84c;font-size:13px;margin-bottom:4px">Tap to upload screenshot</p>
+        <p style="color:#7a6f98;font-size:11px">PNG, JPG, HEIC supported</p>
+      </div>
+      <div id="photo-preview" style="display:none;margin-bottom:16px">
+        <img id="preview-img" style="width:100%;border-radius:12px;max-height:260px;object-fit:cover;margin-bottom:10px"/>
+        <button onclick="removePhoto()" style="background:none;border:none;color:#7a6f98;font-size:12px">✕ Remove</button>
+      </div>
+      <span class="lbl" style="margin-top:8px">Tell us what's happening (optional)</span>
+      <textarea id="photo-context" rows="3" placeholder="e.g. This is my partner after I told them I was upset. They always respond this way..." style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:13px;color:#f0eafa;font-size:13px;line-height:1.7;margin-bottom:16px"></textarea>
+      <button class="btn btn-gold" id="analyze-photo-btn" onclick="runAnalysis('photo')" disabled>Analyze Screenshot</button>
+    </div>
+  </div>
+  <div id="analyzer-paste" style="display:none">
+    <div class="card">
+      <button class="back-btn" onclick="resetAnalyzer()">← Back</button>
+      <span class="lbl">Paste the conversation below</span>
+      <textarea id="convo-text" rows="7" placeholder="Them: I never said that, you're imagining things.&#10;Me: But I have the texts...&#10;Them: You're too sensitive." style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:13px;color:#f0eafa;font-size:13px;line-height:1.7;margin-bottom:16px" oninput="checkPasteReady()"></textarea>
+      <span class="lbl">Tell us what's happening (optional)</span>
+      <textarea id="paste-context" rows="3" placeholder="e.g. This is my friend of 5 years. This pattern started after I set a boundary..." style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:13px;color:#f0eafa;font-size:13px;line-height:1.7;margin-bottom:16px"></textarea>
+      <button class="btn btn-gold" id="analyze-paste-btn" onclick="runAnalysis('paste')" disabled>Analyze Conversation</button>
+    </div>
+  </div>
+  <div id="analyzer-loading" style="display:none">
+    <div class="card" style="text-align:center;padding:48px 20px">
+      <div class="spin-wrap" id="loading-sun"></div>
+      <p style="color:#c9a84c;font-size:12px;letter-spacing:3px;text-transform:uppercase;margin:18px 0 8px">Analyzing</p>
+      <p style="color:#7a6f98;font-size:12px;line-height:1.6">Reading the patterns beneath the words…</p>
+    </div>
+  </div>
+  <div id="analyzer-result" style="display:none"></div>
+</div>
+
+<!-- DIARY -->
+<div class="screen" id="screen-diary">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px">
+    <div><span class="lbl">Your Journey</span><h2 style="color:#f0eafa;font-size:20px;font-weight:400">Diary</h2></div>
+    <button onclick="showDiaryNew()" style="width:38px;height:38px;border-radius:50%;border:1px solid #c9a84c;background:transparent;color:#c9a84c;font-size:20px;display:flex;align-items:center;justify-content:center">+</button>
+  </div>
+  <div id="diary-new" style="display:none">
+    <button class="back-btn" onclick="hideDiaryNew()">← Diary</button>
+    <div class="card">
+      <span class="lbl">New Entry</span>
+      <p style="color:#9d93b8;font-size:12px;letter-spacing:1px;margin-bottom:10px">How are you feeling?</p>
+      <div style="display:flex;gap:8px;margin-bottom:20px">
+        <button class="mood-btn" onclick="selectMood(this,'Clear','#4cc9a8','○')" style="color:#7a6f98"><div style="font-size:15px;margin-bottom:3px">○</div>Clear</button>
+        <button class="mood-btn" onclick="selectMood(this,'Uncertain','#c9a84c','◑')" style="color:#7a6f98"><div style="font-size:15px;margin-bottom:3px">◑</div>Uncertain</button>
+        <button class="mood-btn" onclick="selectMood(this,'Heavy','#e07a30','◕')" style="color:#7a6f98"><div style="font-size:15px;margin-bottom:3px">◕</div>Heavy</button>
+        <button class="mood-btn" onclick="selectMood(this,'Raw','#c94c6a','●')" style="color:#7a6f98"><div style="font-size:15px;margin-bottom:3px">●</div>Raw</button>
+      </div>
+      <textarea id="journal-text" rows="7" placeholder="Write freely. This is your space…" style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:13px;color:#f0eafa;font-size:14px;line-height:1.7;margin-bottom:16px" oninput="checkJournalReady()"></textarea>
+      <button class="btn btn-gold" id="save-journal-btn" onclick="saveJournal()" disabled>Save Entry</button>
+    </div>
+  </div>
+  <div id="diary-list"></div>
+</div>
+
+<!-- VAULT -->
+<div class="screen" id="screen-vault">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <div><span class="lbl">Sacred Space</span><h2 style="color:#f0eafa;font-size:20px;font-weight:400">The Vault</h2></div>
+    <button onclick="showVaultNew()" style="width:38px;height:38px;border-radius:50%;border:1px solid #4cc9a8;background:transparent;color:#4cc9a8;font-size:20px;display:flex;align-items:center;justify-content:center">+</button>
+  </div>
+  <p style="color:#7a6f98;font-size:12px;line-height:1.6;margin-bottom:22px">Your private space for wins, memories, gratitude and goals. Everything that reminds you of who you really are.</p>
+  <div id="vault-new" style="display:none">
+    <button class="back-btn" onclick="hideVaultNew()">← Vault</button>
+    <div class="card">
+      <span class="lbl">New Vault Entry</span>
+      <p style="color:#9d93b8;font-size:12px;margin-bottom:10px">Category</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px" id="vault-cats">
+        <button class="mood-btn" onclick="selectVaultCat(this,'Win','#c9a84c')" style="color:#7a6f98;padding:12px 8px"><div style="font-size:16px;margin-bottom:3px">🏆</div>Win</button>
+        <button class="mood-btn" onclick="selectVaultCat(this,'Memory','#6b2580')" style="color:#7a6f98;padding:12px 8px"><div style="font-size:16px;margin-bottom:3px">✨</div>Memory</button>
+        <button class="mood-btn" onclick="selectVaultCat(this,'Gratitude','#4cc9a8')" style="color:#7a6f98;padding:12px 8px"><div style="font-size:16px;margin-bottom:3px">🌱</div>Gratitude</button>
+        <button class="mood-btn" onclick="selectVaultCat(this,'Goal','#e07a30')" style="color:#7a6f98;padding:12px 8px"><div style="font-size:16px;margin-bottom:3px">◎</div>Goal</button>
+      </div>
+      <input id="vault-title" type="text" placeholder="Title your entry…" style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:13px;color:#f0eafa;font-size:14px;margin-bottom:12px" oninput="checkVaultReady()"/>
+      <textarea id="vault-text" rows="5" placeholder="Write it out…" style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:13px;color:#f0eafa;font-size:14px;line-height:1.7;margin-bottom:16px" oninput="checkVaultReady()"></textarea>
+      <button class="btn btn-gold" id="save-vault-btn" onclick="saveVaultEntry()" disabled>Save to Vault</button>
+    </div>
+  </div>
+  <div id="vault-list"></div>
+</div>
+
+<!-- RED FLAG DICTIONARY -->
+<div class="screen" id="screen-flags">
+  <span class="lbl">Know the Signs</span>
+  <h2 style="color:#f0eafa;font-size:20px;font-weight:400;margin-bottom:20px">Red Flag Dictionary</h2>
+  <div id="flags-list"></div>
+</div>
+
+<!-- MIRROR -->
+<div class="screen" id="screen-mirror">
+  <span class="lbl">Reflect Inward</span>
+  <h2 style="color:#f0eafa;font-size:20px;font-weight:400;margin-bottom:20px">Mirror</h2>
+  <div class="card" style="text-align:center;padding:32px 24px;margin-bottom:14px">
+    <div style="display:flex;justify-content:center;margin-bottom:16px" id="mirror-sun"></div>
+    <span class="lbl">Reflection Prompt</span>
+    <p style="color:#f0eafa;font-size:18px;line-height:1.8;font-style:italic;min-height:88px;margin-bottom:24px" id="mirror-prompt"></p>
+    <button class="btn btn-outline" onclick="nextPrompt()">Next Prompt</button>
+  </div>
+  <div class="card" style="padding:16px 18px"><span class="lbl">Remember</span><p style="color:#9d93b8;font-size:13px;line-height:1.7">You are not here to fix them. You are here to return to yourself.</p></div>
+</div>
+
+<!-- TIMELINE -->
+<div class="screen" id="screen-timeline">
+  <span class="lbl">Your Progress</span>
+  <h2 style="color:#f0eafa;font-size:20px;font-weight:400;margin-bottom:20px">Pattern Timeline</h2>
+  <div id="timeline-list"></div>
+</div>
+
+<!-- SETTINGS -->
+<div class="screen" id="screen-settings">
+  <span class="lbl">Account</span>
+  <h2 style="color:#f0eafa;font-size:20px;font-weight:400;margin-bottom:22px">Settings</h2>
+  <div class="card" style="margin-bottom:12px">
+    <span class="lbl">Sign-In & Sync</span>
+    <div id="account-signed-out">
+      <p style="color:#9d93b8;font-size:13px;line-height:1.7;margin-bottom:14px">Create or sign in to an account to keep your private progress available on every device.</p>
+      <button class="btn btn-gold" onclick="showAuthModal('signup')">Create Account</button>
+      <button class="btn btn-outline" onclick="showAuthModal('login')">Sign In</button>
+    </div>
+    <div id="account-signed-in" style="display:none">
+      <p data-account-email style="color:#f0eafa;font-size:14px;margin-bottom:6px"></p>
+      <p id="account-sync-status" style="color:#4cc9a8;font-size:11px;margin-bottom:14px">Saved across devices</p>
+      <button class="btn btn-outline" onclick="showAuthModal('login')">Account Options</button>
+      <button class="btn btn-ghost" onclick="signOut()">Log Out</button>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <span class="lbl">Subscription</span>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span id="sub-status" style="font-size:14px"></span>
+      <button id="sub-btn" onclick="openStripeCheckout()" style="background:linear-gradient(135deg,#6b2580,#c9a84c);border:none;border-radius:8px;padding:8px 14px;color:#07091a;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;display:none">Subscribe</button>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <span class="lbl">Explore</span>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <button onclick="goTo('flags')" style="background:none;border:none;color:#9d93b8;font-size:13px;text-align:left;padding:0">Red Flag Dictionary →</button>
+      <button onclick="goTo('mirror')" style="background:none;border:none;color:#9d93b8;font-size:13px;text-align:left;padding:0">Mirror →</button>
+      <button onclick="goTo('timeline')" style="background:none;border:none;color:#9d93b8;font-size:13px;text-align:left;padding:0">Pattern Timeline →</button>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <span class="lbl">Legal</span>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <button onclick="goTo('privacy')" style="background:none;border:none;color:#9d93b8;font-size:13px;text-align:left;padding:0">Privacy Policy →</button>
+      <button onclick="goTo('refund')" style="background:none;border:none;color:#9d93b8;font-size:13px;text-align:left;padding:0">Refund Policy →</button>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <span class="lbl">Data</span>
+    <button class="btn btn-outline" onclick="downloadMyData()" style="margin-bottom:10px">Download My Data</button>
+    <button class="btn btn-ghost" onclick="showClearConfirm()" id="clear-btn">Clear All My Data</button>
+    <div id="clear-confirm" style="display:none">
+      <p style="color:#c94c6a;font-size:13px;line-height:1.6;margin-bottom:14px">This will permanently delete everything. Cannot be undone.</p>
+      <button class="btn btn-danger" onclick="clearAllData()">Yes, Delete Everything</button>
+      <button class="btn btn-ghost" onclick="hideClearConfirm()">Cancel</button>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <span class="lbl">Coming Soon</span>
+    <p style="color:#7a6f98;font-size:11px;line-height:1.6;margin-bottom:14px">Exciting things are on the way at Embody-Tech-AI LLC</p>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <p style="color:#9d93b8;font-size:13px;margin-bottom:2px">NLP & Coaching Services</p>
+          <p style="color:#7a6f98;font-size:11px">Work directly with Victoria</p>
+        </div>
+        <span style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:3px 10px;color:#c9a84c;font-size:9px;letter-spacing:1.5px;text-transform:uppercase">Soon</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <p style="color:#9d93b8;font-size:13px;margin-bottom:2px">Counselor Directory</p>
+          <p style="color:#7a6f98;font-size:11px">Find trusted professionals</p>
+        </div>
+        <span style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:3px 10px;color:#c9a84c;font-size:9px;letter-spacing:1.5px;text-transform:uppercase">Soon</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <p style="color:#9d93b8;font-size:13px;margin-bottom:2px">Wellness Resources</p>
+          <p style="color:#7a6f98;font-size:11px">Support beyond the app</p>
+        </div>
+        <span style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);border-radius:10px;padding:3px 10px;color:#c9a84c;font-size:9px;letter-spacing:1.5px;text-transform:uppercase">Soon</span>
+      </div>
+    </div>
+    <p style="color:#7a6f98;font-size:11px;margin-top:14px">embody-tech-ai.com</p>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <span class="lbl">Founder Access</span>
+    <div style="display:flex;gap:8px">
+      <input id="founder-input" type="password" placeholder="Enter access code" style="flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 12px;color:#f0eafa;font-size:13px"/>
+      <button onclick="activateFounder(document.getElementById('founder-input').value)" style="background:linear-gradient(135deg,#6b2580,#c9a84c);border:none;border-radius:10px;padding:10px 16px;color:#07091a;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer">Activate</button>
+    </div>
+  </div>
+  <p style="color:#7a6f98;font-size:11px;text-align:center;letter-spacing:1px;margin-top:20px">Embodying Sane v2.0 · embodysane.com</p>
+</div>
+
+<!-- PRIVACY -->
+<div class="screen" id="screen-privacy">
+  <button class="back-btn" onclick="goTo('settings')">← Settings</button>
+  <h2 style="color:#f0eafa;font-size:20px;font-weight:400;margin-bottom:4px">Privacy Policy</h2>
+  <p style="color:#7a6f98;font-size:11px;margin-bottom:24px" id="privacy-date"></p>
+  <div class="legal-section"><div style="color:#c9a84c;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">What We Collect</div><div style="color:#9d93b8;font-size:13px;line-height:1.75">When you create an account, we collect your email address and optional name. We also store the diary entries, moods, Vault entries, test results, and account settings you choose to save so they can follow you across devices.</div></div>
+  <div class="legal-section"><div style="color:#c9a84c;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">How Your Data Is Stored</div><div style="color:#9d93b8;font-size:13px;line-height:1.75">Signed-in account data is stored in Netlify's managed database and cached in your browser for app performance. Existing browser data is moved into your account when you first sign in. You can download or clear your saved data from Settings.</div></div>
+  <div class="legal-section"><div style="color:#c9a84c;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Conversation Analyzer & AI</div><div style="color:#9d93b8;font-size:13px;line-height:1.75">When you use the Conversation Analyzer, your conversation text or screenshot is sent to Anthropic's API for analysis. We strongly recommend removing names or identifying details before submitting. We do not store your conversation content.</div></div>
+  <div class="legal-section"><div style="color:#c9a84c;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Payments</div><div style="color:#9d93b8;font-size:13px;line-height:1.75">Payments are processed securely through Stripe. We store Stripe customer and subscription identifiers with your account to confirm access, but we do not store your payment card information.</div></div>
+  <div class="legal-section"><div style="color:#c9a84c;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">We Do Not Sell Your Data</div><div style="color:#9d93b8;font-size:13px;line-height:1.75">We do not sell, rent, share, or monetize your personal data in any form.</div></div>
+  <div class="legal-section"><div style="color:#c9a84c;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Contact</div><div style="color:#9d93b8;font-size:13px;line-height:1.75">privacy@embodysane.com</div></div>
+</div>
+
+<!-- REFUND -->
+<div class="screen" id="screen-refund">
+  <button class="back-btn" onclick="goTo('settings')">← Settings</button>
+  <h2 style="color:#f0eafa;font-size:20px;font-weight:400;margin-bottom:4px">Refund Policy</h2>
+  <p style="color:#7a6f98;font-size:11px;margin-bottom:24px" id="refund-date"></p>
+  <div class="legal-section"><div style="color:#c9a84c;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">3-Day Free Trial</div><div style="color:#9d93b8;font-size:13px;line-height:1.75">All new users receive a 3-day free trial with full access to every feature. No credit card required. If you decide not to subscribe, your trial expires with no charge.</div></div>
+  <div class="legal-section"><div style="color:#c9a84c;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Subscription</div><div style="color:#9d93b8;font-size:13px;line-height:1.75">Embodying Sane is $3.69/month. You may cancel anytime and your access continues through the end of the current billing period.</div></div>
+  <div class="legal-section"><div style="color:#c9a84c;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">No Refunds — General Policy</div><div style="color:#9d93b8;font-size:13px;line-height:1.75">All subscription payments are non-refundable. This includes partial months, unused time, and cases where you forgot to cancel. Use your free trial to evaluate before subscribing.</div></div>
+  <div class="legal-section"><div style="color:#c9a84c;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Exception: App Not Functioning</div><div style="color:#9d93b8;font-size:13px;line-height:1.75">If the app has a verified technical failure preventing access to core features for more than 72 hours after a support request, you may be eligible for a prorated refund. Email support@embodysane.com.</div></div>
+  <div class="legal-section"><div style="color:#c9a84c;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Contact</div><div style="color:#9d93b8;font-size:13px;line-height:1.75">support@embodysane.com</div></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="nav">
+  <div class="inner">
+    <button class="nav-btn active" id="nav-home" onclick="goTo('home')"><span class="icon">⌂</span><span class="nav-label">Home</span></button>
+    <button class="nav-btn" id="nav-tests" onclick="goTo('tests')"><span class="icon">◎</span><span class="nav-label">Tests</span></button>
+    <button class="nav-btn" id="nav-analyzer" onclick="goTo('analyzer')"><span class="icon">⟐</span><span class="nav-label">Convo</span></button>
+    <button class="nav-btn" id="nav-diary" onclick="goTo('diary')"><span class="icon">✦</span><span class="nav-label">Diary</span></button>
+    <button class="nav-btn" id="nav-settings" onclick="goTo('settings')"><span class="icon">◉</span><span class="nav-label">More</span></button>
+  </div>
+</div>
+</div>
+
+<!-- STRIPE PRICING MODAL -->
+<div id="stripe-pricing-overlay">
+  <div class="spm-box">
+    <button class="spm-close" onclick="closePricingModal()">&times;</button>
+    <h3 class="spm-heading">Expand Your Relational Awareness.</h3>
+    <p class="spm-sub">You've used your free daily diagnostics. Unlock unlimited communication pattern analysis, trauma healing tools, and cognitive clarity.</p>
+    <div class="spm-price-card">
+      <span class="spm-price">$3.69</span>
+      <span class="spm-period"> / month</span>
+      <p class="spm-cancel">Cancel securely at any time.</p>
+    </div>
+    <ul class="spm-benefits">
+      <li>✨ <strong>Unlimited Screenshot Analysis:</strong> Run your texts instantly.</li>
+      <li>🧠 <strong>Deep Cognitive Checks:</strong> Track evolving manipulation patterns.</li>
+      <li>🛡️ <strong>Boundary Building Maps:</strong> Step-by-step tools for self-discovery.</li>
+    </ul>
+    <button class="spm-cta" onclick="openStripeCheckout()">Unlock Unlimited Access</button>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+window.STRIPE_LINK = "https://buy.stripe.com/cNieVdckIeDrf709RB4AU03";
+const STRIPE_LINK = window.STRIPE_LINK;
+const TRIAL_DAYS = 3;
+
+// ── STORAGE ──────────────────────────────────────────────────────────────────
+function lsGet(k,d){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));if(['es_diary','es_vault','es_free_analyses','es_daily_analyses','es_trial_start'].includes(k))window.queueAccountSync?.();}catch{}}
+function getDiary(){return lsGet('es_diary',[]);}
+function saveDiary(d){lsSet('es_diary',d);}
+function addDiaryEntry(e){const d=getDiary();d.unshift(e);saveDiary(d);}
+function getVault(){return lsGet('es_vault',[]);}
+function saveVault(v){lsSet('es_vault',v);}
+
+// ── TRIAL ────────────────────────────────────────────────────────────────────
+function initTrial(){if(!lsGet('es_trial_start',null))lsSet('es_trial_start',new Date().toISOString());}
+function getTrialInfo(){
+  const s=lsGet('es_trial_start',null);
+  if(!s)return{active:false,expired:false,daysLeft:0};
+  const ms=new Date(s).getTime()+TRIAL_DAYS*864e5-Date.now();
+  if(ms<=0)return{active:false,expired:true,daysLeft:0};
+  return{active:true,expired:false,daysLeft:Math.ceil(ms/864e5)};
+}
+function hasAccess(){
+  if(lsGet('es_founder_verified',false))return true;
+  return lsGet('es_subscribed',false)||getTrialInfo().active;
+}
+async function activateFounder(code){
+  if(!window.getCurrentAccountUser?.()){showAuthModal('login','Sign in before activating founder access so it stays connected to your account.');return;}
+  try{
+    const res=await fetch('/api/verify-founder',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code})});
+    const data=await res.json();
+    if(data.valid){await window.refreshAccount?.();alert('Founder access activated!');updateTrialBanner();updateSettings();}
+    else{alert('Invalid code.');}
+  }catch{alert('Verification failed. Please try again.');}
+}
+// After paying, Stripe sends the customer back here with ?session_id=... in the
+// URL. We confirm that session was actually paid (server-side) and only then
+// unlock full access on this device.
+async function handleStripeReturn(){
+  const params=new URLSearchParams(window.location.search);
+  const sessionId=params.get('session_id');
+  if(!sessionId)return false;
+  // Clean the id out of the address bar regardless of outcome.
+  params.delete('session_id');
+  const clean=window.location.pathname+(params.toString()?'?'+params.toString():'');
+  history.replaceState(null,'',clean);
+  try{
+    const res=await fetch('/api/verify-subscription',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:sessionId})});
+    const data=await res.json();
+    if(data.valid){lsSet('es_subscribed',true);await window.refreshAccount?.();alert('Thank you! Your subscription is active and linked to your account.');}
+    else if(res.status===401){showAuthModal('login','Sign in with the same email used at checkout to connect your subscription.');}
+    else{alert("We couldn't confirm your payment yet. If you were charged, please email support@embodysane.com.");}
+  }catch{alert("We couldn't confirm your payment yet. If you were charged, please email support@embodysane.com.");}
+  return true;
+}
+async function syncSubscriptionAccess(){
+  try{await window.refreshAccount?.();}catch{}
+}
+
+// ── SUN SVG ──────────────────────────────────────────────────────────────────
+function sunSVG(size,spin=false){
+  const rays=32,cx=size/2,cy=size/2,iR=size*0.18,oR=size*0.42,cR=size*0.13;
+  let l='';
+  for(let i=0;i<rays;i++){const a=(i*360)/rays,rad=(a*Math.PI)/180,long=i%2===0,len=long?oR:oR*0.74;l+=`<line x1="${cx+iR*Math.cos(rad)}" y1="${cy+iR*Math.sin(rad)}" x2="${cx+len*Math.cos(rad)}" y2="${cy+len*Math.sin(rad)}" stroke="#c9a84c" stroke-width="${long?1.4:0.8}" stroke-opacity="${long?1:0.5}"/>`;}
+  return`<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="${spin?'animation:spin 28s linear infinite':''}"><defs><radialGradient id="sg${size}" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#e8c96a"/><stop offset="100%" stop-color="#c9a84c"/></radialGradient></defs>${l}<circle cx="${cx}" cy="${cy}" r="${cR}" fill="url(#sg${size})"/></svg>`;
+}
+
+// ── NAVIGATION ───────────────────────────────────────────────────────────────
+const FREE_SCREENS=['home','privacy','refund','settings'];
+function goTo(screen){
+  if(!hasAccess()&&!FREE_SCREENS.includes(screen)){showPaywall();return;}
+  hidePaywall();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>{b.classList.remove('active');const d=b.querySelector('.nav-dot');if(d)d.remove();});
+  const el=document.getElementById('screen-'+screen);
+  if(el)el.classList.add('active');
+  const navKey=['home','tests','analyzer','diary','settings'].includes(screen)?screen:null;
+  if(navKey){const nb=document.getElementById('nav-'+navKey);if(nb){nb.classList.add('active');const dot=document.createElement('div');dot.className='nav-dot';nb.appendChild(dot);}}
+  if(screen==='home')updateHome();
+  if(screen==='diary')renderDiary();
+  if(screen==='vault')renderVault();
+  if(screen==='settings')updateSettings();
+  if(screen==='timeline')renderTimeline();
+  if(screen==='tests')renderTestsHub();
+  if(screen==='analyzer')updateAnalyzerBadge();
+  window.scrollTo(0,0);
+}
+function showPaywall(){document.getElementById('paywall').style.display='block';document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));}
+function hidePaywall(){document.getElementById('paywall').style.display='none';}
+
+// ── TRIAL BANNER ──────────────────────────────────────────────────────────────
+function updateTrialBanner(){
+  const t=getTrialInfo(),banner=document.getElementById('trial-banner');
+  if(t.active&&!lsGet('es_subscribed',false)){banner.style.display='flex';document.getElementById('trial-text').textContent=`Free Trial — ${t.daysLeft} day${t.daysLeft!==1?'s':''} left`;}
+  else banner.style.display='none';
+}
+
+// ── HOME ──────────────────────────────────────────────────────────────────────
+const QUOTES=[
+  {text:"The wound is where the light enters you.",author:"Rumi"},
+  {text:"You alone are enough. You have nothing to prove.",author:"Maya Angelou"},
+  {text:"Owning our story and loving ourselves through that process is the bravest thing we'll ever do.",author:"Brené Brown"},
+  {text:"Until you make the unconscious conscious, it will direct your life and you will call it fate.",author:"Carl Jung"},
+];
+function updateHome(){
+  const diary=getDiary();
+  document.getElementById('stat-tests').textContent=diary.filter(e=>e.type==='test').length;
+  document.getElementById('stat-analyses').textContent=diary.filter(e=>e.type==='analysis').length;
+  document.getElementById('stat-journal').textContent=diary.filter(e=>e.type==='journal').length;
+  document.getElementById('diary-count-home').textContent=diary.length+' entries';
+  const q=QUOTES[new Date().getDate()%QUOTES.length];
+  document.getElementById('daily-quote').textContent='"'+q.text+'"';
+  document.getElementById('daily-author').textContent='— '+q.author;
+}
+
+// ── TESTS DATA ────────────────────────────────────────────────────────────────
+const TESTS=[
+  {
+    id:'relationship',icon:'◉',color:'#c9a84c',
+    name:'Relationship Pattern Test',
+    desc:'Uncover the dynamics at play in your relationship. 8 questions. Answer honestly for the relationship that brought you here.',
+    questions:[
+      {text:'After conversations with this person, do you often feel confused about what actually happened?',tag:'Gaslighting',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'Do you find yourself apologizing frequently — even when you\'re unsure what you did wrong?',tag:'Guilt Cycling',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'Have you started to feel like your emotions are \'too much\' or overreactions?',tag:'Emotional Minimizing',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'Do you feel like you\'ve quietly changed who you are to keep the peace?',tag:'Identity Erosion',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'Does this person make you feel special and criticized in turns — sometimes within the same conversation?',tag:'Hot/Cold Pattern',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'Do you feel responsible for managing this person\'s mood or emotional state?',tag:'Emotional Labor',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'Have you pulled away from friends or family since this relationship intensified?',tag:'Isolation',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'Do you replay conversations trying to figure out where things went wrong — even when you were the one hurt?',tag:'Self-Blame Loop',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+    ],
+    score(answers){
+      const s=answers.reduce((a,b)=>a+b,0),max=16,p=s/max;
+      if(p<0.25)return{level:'Grounded',color:'#4cc9a8',icon:'○',msg:'Your patterns reflect a relatively balanced dynamic. Stay aware — growth is always available.',detail:'This relationship shows few signs of manipulation. Keep trusting your instincts.',tags:[]};
+      if(p<0.55)return{level:'Aware',color:'#c9a84c',icon:'◑',msg:'Some patterns here are worth exploring. Your awareness is your power.',detail:'You\'re picking up on something. Trust that feeling and keep paying attention.',tags:answers.map((v,i)=>v>=1?TESTS[0].questions[i].tag:null).filter(Boolean)};
+      if(p<0.8)return{level:'At Risk',color:'#e07a30',icon:'◕',msg:'Several patterns suggest you may be in a manipulative dynamic.',detail:'What you\'re experiencing is real. You deserve a relationship where you feel safe and whole.',tags:answers.map((v,i)=>v>=1?TESTS[0].questions[i].tag:null).filter(Boolean)};
+      return{level:'High Alert',color:'#c94c6a',icon:'●',msg:'These patterns are significant. What you\'re experiencing is real. You are not the problem.',detail:'Please reach out to someone you trust. You deserve safety, clarity, and peace.',tags:answers.map((v,i)=>v>=1?TESTS[0].questions[i].tag:null).filter(Boolean)};
+    }
+  },
+  {
+    id:'love-language',icon:'♡',color:'#c94c6a',
+    name:'Love Language Test',
+    desc:'Discover how you naturally give and receive love. Understanding your love language transforms every relationship in your life.',
+    questions:[
+      {text:'When someone wants to make you feel appreciated, what hits deepest?',tag:'Receiving Love',opts:['Hearing "I\'m proud of you"','Them doing something helpful','A thoughtful surprise gift','Uninterrupted time together','A long hug or physical closeness'],vals:['W','A','G','T','P']},
+      {text:'When you\'re going through something hard, what comforts you most?',tag:'Receiving Support',opts:['Words of reassurance','Someone taking things off your plate','A care package or treat','Someone sitting with you','Physical comfort — hand held, held close'],vals:['W','A','G','T','P']},
+      {text:'How do you most naturally show someone you love them?',tag:'Expressing Love',opts:['Telling them often','Doing things for them','Giving meaningful gifts','Giving them your full attention','Physical affection'],vals:['W','A','G','T','P']},
+      {text:'What makes you feel most seen in a relationship?',tag:'Feeling Seen',opts:['Being told how much you matter','Someone handling something without being asked','A gift that shows they really know you','Being the priority — no distractions','Touch — a hand on your back, a squeeze'],vals:['W','A','G','T','P']},
+      {text:'What do you notice most when it\'s missing in a relationship?',tag:'Love Gap',opts:['Words of affirmation go quiet','No one shows up to help','Thoughtfulness disappears','They stop making time for you','Physical connection fades'],vals:['W','A','G','T','P']},
+    ],
+    score(answers){
+      const counts={W:0,A:0,G:0,T:0,P:0};
+      answers.forEach(a=>{if(a)counts[a]++;});
+      const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+      const map={
+        W:{level:'Words of Affirmation',icon:'✦',color:'#c9a84c',msg:'You feel most loved through spoken and written expression.',detail:'Compliments, "I love you", encouragement, and heartfelt notes fill your cup. Silence or criticism can feel devastating to you.'},
+        A:{level:'Acts of Service',icon:'◎',color:'#6b2580',msg:'You feel most loved when people show up and do.',detail:'Actions speak louder than words for you. When someone lightens your load or takes care of something without being asked, you feel truly cared for.'},
+        G:{level:'Receiving Gifts',icon:'◈',color:'#c94c6a',msg:'You feel most loved through thoughtful, meaningful gestures.',detail:'It\'s not about the cost — it\'s the thought. A gift that shows someone was thinking of you makes you feel truly cherished.'},
+        T:{level:'Quality Time',icon:'◑',color:'#4cc9a8',msg:'You feel most loved through undivided, intentional presence.',detail:'Full attention is everything. When someone puts the phone down and is truly present with you, that is love in its purest form for you.'},
+        P:{level:'Physical Touch',icon:'○',color:'#e07a30',msg:'You feel most loved through physical connection and closeness.',detail:'Hugs, hand-holding, a reassuring touch — these communicate safety and love to you in a way words simply cannot.'},
+      };
+      return{...map[top],tags:[]};
+    }
+  },
+  {
+    id:'attachment',icon:'◑',color:'#6b2580',
+    name:'Attachment Style Test',
+    desc:'Your attachment style was formed in childhood and shapes every relationship you have. Understanding it is one of the most powerful things you can do.',
+    questions:[
+      {text:'When someone you care about doesn\'t respond to your message for hours, what happens inside you?',tag:'Response to Distance',opts:['I feel fine — they\'re probably busy','I start wondering if something is wrong with us','I\'m relieved — I need space too','I feel anxious and a bit panicked'],vals:['S','A','V','D']},
+      {text:'When conflict arises in a relationship, you tend to:',tag:'Conflict Response',opts:['Work through it openly and calmly','Pursue resolution — sometimes intensely','Pull back and need space to process','Freeze or feel overwhelmed'],vals:['S','A','V','D']},
+      {text:'How do you feel about depending on others?',tag:'Dependency',opts:['Comfortable — it\'s a natural part of connection','I want closeness but worry it won\'t last','Uncomfortable — I prefer to handle things alone','I want connection but it feels unsafe'],vals:['S','A','V','D']},
+      {text:'In past relationships, you\'ve most often felt:',tag:'Relationship Pattern',opts:['Generally secure and connected','Like you needed more than they gave','Like they needed more than you could give','Like you wanted love but kept getting hurt'],vals:['S','A','V','D']},
+      {text:'When a relationship ends, you:',tag:'After Separation',opts:['Grieve and eventually move forward','Struggle to let go and replay what went wrong','Move on relatively quickly','Feel deeply destabilized'],vals:['S','A','V','D']},
+      {text:'When someone gets really close to you, you:',tag:'Intimacy Response',opts:['Welcome it and lean in','Fear they\'ll eventually leave','Start to feel suffocated','Feel both drawn in and scared'],vals:['S','A','V','D']},
+    ],
+    score(answers){
+      const counts={S:0,A:0,V:0,D:0};
+      answers.forEach(a=>{if(a)counts[a]++;});
+      const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+      const map={
+        S:{level:'Secure',icon:'○',color:'#4cc9a8',msg:'You have a secure attachment style — a powerful foundation.',detail:'You\'re comfortable with intimacy and independence. You communicate needs clearly and handle conflict without catastrophizing. This is the result of felt safety in early relationships.'},
+        A:{level:'Anxious',icon:'◑',color:'#c9a84c',msg:'You have an anxious attachment style — you love deeply and fear loss.',detail:'You crave closeness but fear abandonment. You may seek reassurance often, feel hypervigilant to signs of rejection, and sometimes push for more connection than others can offer in that moment.'},
+        V:{level:'Avoidant',icon:'◎',color:'#6b2580',msg:'You have an avoidant attachment style — you value independence deeply.',detail:'Intimacy can feel suffocating. You\'ve learned that relying on others leads to disappointment, so you built strong walls. You may seem aloof but feel deeply — alone.'},
+        D:{level:'Disorganized',icon:'●',color:'#c94c6a',msg:'You have a disorganized attachment style — you want love and fear it.',detail:'This often develops from early experiences where the person who should have felt safe also felt threatening. You may find yourself drawn to love and fleeing from it at the same time.'},
+      };
+      return{...map[top],tags:[]};
+    }
+  },
+  {
+    id:'people-pleaser',icon:'◕',color:'#e07a30',
+    name:'People Pleaser Test',
+    desc:'How much do you abandon yourself to keep others comfortable? This test reveals where you are on the spectrum — and what\'s possible.',
+    questions:[
+      {text:'You say yes to things you want to say no to because you\'re afraid of how the other person will react.',tag:'Fear-Based Agreement',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'You apologize even when you\'re not sure you did anything wrong.',tag:'Preemptive Apology',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'You feel responsible for other people\'s emotions and moods.',tag:'Emotional Responsibility',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'You struggle to express disagreement or a different opinion, especially with certain people.',tag:'Voice Suppression',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'You put others\' needs before your own and then feel resentful about it later.',tag:'Resentment Cycle',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'Your sense of worth is tied to whether others are happy with you.',tag:'Approval Dependency',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'You feel anxious when someone seems upset — even if it has nothing to do with you.',tag:'Anxiety Trigger',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+      {text:'You have trouble identifying what YOU want — separate from what others want for you.',tag:'Self-Loss',opts:['Rarely','Sometimes','Often'],vals:[0,1,2]},
+    ],
+    score(answers){
+      const s=answers.reduce((a,b)=>a+b,0),max=16,p=s/max;
+      if(p<0.25)return{level:'Sovereign',icon:'○',color:'#4cc9a8',msg:'You have a strong, grounded sense of self.',detail:'You honor your own needs and can say no without spiraling. This is the result of knowing your worth independent of others\' approval.',tags:[]};
+      if(p<0.55)return{level:'Emerging',icon:'◑',color:'#c9a84c',msg:'You\'re awakening to your patterns — this is where growth begins.',detail:'You have some people-pleasing tendencies but awareness is already shifting things. You\'re learning where you end and others begin.',tags:answers.map((v,i)=>v>=1?TESTS[3].questions[i].tag:null).filter(Boolean)};
+      if(p<0.8)return{level:'People Pleaser',icon:'◕',color:'#e07a30',msg:'Others\' comfort has become more important than your own truth.',detail:'You\'ve learned that keeping others happy keeps you safe. But this comes at a cost — yourself. Reclaiming your voice is possible and you\'ve already started.',tags:answers.map((v,i)=>v>=1?TESTS[3].questions[i].tag:null).filter(Boolean)};
+      return{level:'Self-Abandoner',icon:'●',color:'#c94c6a',msg:'You have largely disappeared into managing others\' experiences.',detail:'This is not your fault — it was adaptive once. But you deserve to exist fully, with your own needs, voice, and desires. Healing starts with one honest no.',tags:answers.map((v,i)=>v>=1?TESTS[3].questions[i].tag:null).filter(Boolean)};
+    }
+  },
+  {
+    id:'boundaries',icon:'◈',color:'#4cc9a8',
+    name:'Boundary Style Test',
+    desc:'Boundaries are not walls — they\'re the lines that define where you end and others begin. Discover your boundary style.',
+    questions:[
+      {text:'When someone crosses a line with you, you:',tag:'Response to Violations',opts:['Address it clearly and directly','Feel hurt but say nothing','Shut down and create distance','React intensely and sometimes regret how'],vals:[2,0,1,1]},
+      {text:'Your personal limits and needs are:',tag:'Self-Awareness',opts:['Clear to you and communicated when needed','Vague — you\'re not always sure what you need','Clear but you keep them to yourself','Clear but you feel guilty expressing them'],vals:[2,1,1,0]},
+      {text:'In relationships you tend to give:',tag:'Giving Pattern',opts:['Proportionally — you give and receive','More than you receive — it feels safer','Less than others want — vulnerability feels risky','Inconsistently — it depends on how safe you feel'],vals:[2,0,1,1]},
+      {text:'When you say no, you feel:',tag:'No Comfort',opts:['Grounded — no is a complete sentence','Guilty — like you\'ve done something wrong','Relieved — you needed the distance','Anxious about what comes next'],vals:[2,0,1,1]},
+      {text:'People in your life know:',tag:'Clarity to Others',opts:['What you will and won\'t accept','Whatever they want — you adjust to avoid conflict','Not to push too close — you keep them at arm\'s length','It varies — you\'re inconsistent'],vals:[2,0,1,1]},
+      {text:'After someone repeatedly disrespects you, you:',tag:'Repeat Violations',opts:['Have a direct conversation about it','Keep accommodating and hope it changes','Cut off contact without explanation','React in the moment but go back to normal'],vals:[2,0,1,1]},
+    ],
+    score(answers){
+      const s=answers.reduce((a,b)=>a+b,0),max=12,p=s/max;
+      if(p>0.8)return{level:'Healthy Boundaries',icon:'○',color:'#4cc9a8',msg:'You know where you stand and you communicate it clearly.',detail:'You\'ve done the work. Your limits are clear, your communication is honest, and you hold yourself and others accountable with grace.',tags:[]};
+      if(p>0.5)return{level:'Building Boundaries',icon:'◑',color:'#c9a84c',msg:'You understand boundaries but struggle to hold them consistently.',detail:'You know what you need — you\'re just still learning to trust that your needs are valid enough to enforce. They are.',tags:[]};
+      if(p>0.25)return{level:'Porous Boundaries',icon:'◕',color:'#e07a30',msg:'Others regularly move through your limits unchecked.',detail:'You may have learned that having needs causes conflict or rejection. Boundaries feel selfish. They\'re not — they\'re the most loving thing you can do for yourself and others.',tags:[]};
+      return{level:'Walls, Not Boundaries',icon:'●',color:'#c94c6a',msg:'You protect yourself through distance rather than communication.',detail:'Something taught you that closeness isn\'t safe. Walls keep pain out — but they also keep love out. True boundaries create safety through honesty, not distance.',tags:[]};
+    }
+  },
+];
+
+// ── TESTS HUB ─────────────────────────────────────────────────────────────────
+function renderTestsHub(){
+  document.getElementById('tests-list').innerHTML=TESTS.map((t,i)=>`
+    <div class="test-card" onclick="openTest(${i})">
+      <div class="test-icon" style="background:${t.color}22;border:1px solid ${t.color}44">
+        <span style="color:${t.color}">${t.icon}</span>
+      </div>
+      <div style="flex:1">
+        <p style="color:#f0eafa;font-size:14px;margin-bottom:4px">${t.name}</p>
+        <p style="color:#7a6f98;font-size:11px;line-height:1.5">${t.questions.length} questions · ${t.desc.slice(0,50)}…</p>
+      </div>
+      <span style="color:#7a6f98;font-size:16px">›</span>
+    </div>
+  `).join('');
+}
+
+// ── TEST FLOW ─────────────────────────────────────────────────────────────────
+let currentTest=null,tfAnswers=[],tfCurrent=0,tfSelected=null;
+
+function openTest(idx){
+  currentTest=TESTS[idx];
+  tfAnswers=[];tfCurrent=0;tfSelected=null;
+  document.getElementById('tf-tag').textContent=currentTest.name;
+  document.getElementById('tf-title').textContent=currentTest.name;
+  document.getElementById('tf-desc').textContent=currentTest.desc;
+  document.getElementById('tf-intro-sun').innerHTML=sunSVG(80,true);
+  document.getElementById('tf-intro').style.display='block';
+  document.getElementById('tf-quiz').style.display='none';
+  document.getElementById('tf-result').style.display='none';
+  goTo('test-flow');
+}
+
+function startTestFlow(){
+  document.getElementById('tf-intro').style.display='none';
+  document.getElementById('tf-quiz').style.display='block';
+  loadTFQuestion();
+}
+
+function loadTFQuestion(){
+  const q=currentTest.questions[tfCurrent];
+  document.getElementById('tf-test-name').textContent=currentTest.name;
+  document.getElementById('tf-counter').textContent=(tfCurrent+1)+' / '+currentTest.questions.length;
+  document.getElementById('tf-progress').style.width=((tfCurrent+1)/currentTest.questions.length*100)+'%';
+  document.getElementById('tf-q-tag').textContent=q.tag;
+  document.getElementById('tf-q-text').textContent=q.text;
+  document.getElementById('tf-next-btn').textContent=tfCurrent===currentTest.questions.length-1?'See Results':'Next →';
+  document.getElementById('tf-next-btn').disabled=true;
+  tfSelected=null;
+  document.getElementById('tf-opts').innerHTML=q.opts.map((o,i)=>`
+    <button class="opt" id="tfo-${i}" onclick="selectTFOpt(${i})">
+      <span class="opt-dot" id="tfd-${i}"></span>${o}
+    </button>
+  `).join('');
+  document.getElementById('tf-card').style.opacity='1';
+}
+
+function selectTFOpt(i){
+  tfSelected=i;
+  document.querySelectorAll('[id^="tfo-"]').forEach((o,idx)=>{
+    o.classList.toggle('selected',idx===i);
+    document.getElementById('tfd-'+idx).style.background=idx===i?'#c9a84c':'transparent';
+    document.getElementById('tfd-'+idx).style.borderColor=idx===i?'#c9a84c':'rgba(255,255,255,0.15)';
+  });
+  document.getElementById('tf-next-btn').disabled=false;
+}
+
+function nextTF(){
+  if(tfSelected===null)return;
+  tfAnswers.push(currentTest.questions[tfCurrent].vals[tfSelected]);
+  document.getElementById('tf-card').style.opacity='0';
+  setTimeout(()=>{
+    tfCurrent++;
+    if(tfCurrent<currentTest.questions.length){loadTFQuestion();}
+    else{showTFResult();}
+    document.getElementById('tf-card').style.opacity='1';
+  },250);
+}
+
+function showTFResult(){
+  document.getElementById('tf-quiz').style.display='none';
+  document.getElementById('tf-result').style.display='block';
+  const r=currentTest.score(tfAnswers);
+  document.getElementById('tf-result-sun').innerHTML=sunSVG(56);
+  const iw=document.getElementById('tf-result-icon');
+  iw.style.background=r.color+'28';iw.style.border=`2px solid ${r.color}`;iw.style.color=r.color;iw.textContent=r.icon;
+  const lv=document.getElementById('tf-result-level');lv.textContent=r.level;lv.style.color=r.color;
+  document.getElementById('tf-result-div').style.background=`linear-gradient(90deg,transparent,${r.color},transparent)`;
+  document.getElementById('tf-result-msg').textContent=r.msg;
+  document.getElementById('tf-result-detail').textContent=r.detail;
+  const tags=r.tags?.length>0?`<span class="lbl">Patterns Detected</span><div style="display:flex;flex-wrap:wrap;gap:7px;justify-content:center">${[...new Set(r.tags)].map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:'';
+  document.getElementById('tf-result-tags').innerHTML=tags;
+  window._pendingTF={type:'test',testName:currentTest.name,result:r,flagged:r.tags||[],date:fmtDate()};
+}
+
+function saveTFResult(){if(window._pendingTF){addDiaryEntry(window._pendingTF);window._pendingTF=null;}goTo('diary');}
+function retakeTF(){tfAnswers=[];tfCurrent=0;tfSelected=null;document.getElementById('tf-intro').style.display='block';document.getElementById('tf-quiz').style.display='none';document.getElementById('tf-result').style.display='none';}
+
+// ── CONVERSATION ANALYZER ─────────────────────────────────────────────────────
+function showAnalyzerMode(mode){
+  document.getElementById('analyzer-pick').style.display='none';
+  document.getElementById('analyzer-photo').style.display=mode==='photo'?'block':'none';
+  document.getElementById('analyzer-paste').style.display=mode==='paste'?'block':'none';
+}
+function resetAnalyzer(){
+  document.getElementById('analyzer-pick').style.display='block';
+  document.getElementById('analyzer-photo').style.display='none';
+  document.getElementById('analyzer-paste').style.display='none';
+  document.getElementById('analyzer-loading').style.display='none';
+  document.getElementById('analyzer-result').style.display='none';
+  document.getElementById('analyzer-result').innerHTML='';
+  document.getElementById('convo-text').value='';
+  document.getElementById('paste-context').value='';
+  document.getElementById('photo-context').value='';
+  document.getElementById('photo-preview').style.display='none';
+  document.getElementById('upload-zone').style.display='block';
+  document.getElementById('analyze-photo-btn').disabled=true;
+  photoB64=null;currentAnalysisResult=null;
+}
+let photoB64=null,currentAnalysisResult=null;
+function compressImage(dataUrl,maxW,maxH,quality){
+  return new Promise(resolve=>{
+    const img=new Image();
+    img.onload=()=>{
+      let w=img.width,h=img.height;
+      if(w>maxW||h>maxH){const r=Math.min(maxW/w,maxH/h);w=Math.round(w*r);h=Math.round(h*r);}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      resolve(c.toDataURL('image/jpeg',quality).split(',')[1]);
+    };
+    img.src=dataUrl;
+  });
+}
+function handlePhoto(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=async ev=>{
+    const raw=ev.target.result;
+    photoB64=await compressImage(raw,800,800,0.6);
+    document.getElementById('preview-img').src=raw;
+    document.getElementById('upload-zone').style.display='none';document.getElementById('photo-preview').style.display='block';document.getElementById('analyze-photo-btn').disabled=false;
+  };
+  reader.readAsDataURL(file);
+}
+function removePhoto(){photoB64=null;document.getElementById('photo-preview').style.display='none';document.getElementById('upload-zone').style.display='block';document.getElementById('analyze-photo-btn').disabled=true;document.getElementById('photo-input').value='';}
+function checkPasteReady(){document.getElementById('analyze-paste-btn').disabled=document.getElementById('convo-text').value.trim().length<20;}
+function getFreeAnalyses(){return lsGet('es_free_analyses',2);}
+function useFreeAnalysis(){const n=getFreeAnalyses()-1;lsSet('es_free_analyses',n);return n;}
+function getDailyAnalysisCount(){
+  const today=new Date().toISOString().slice(0,10);
+  const data=lsGet('es_daily_analyses',{date:'',count:0});
+  if(data.date!==today)return 0;
+  return data.count;
+}
+function incrementDailyAnalysis(){
+  const today=new Date().toISOString().slice(0,10);
+  const data=lsGet('es_daily_analyses',{date:'',count:0});
+  if(data.date!==today){lsSet('es_daily_analyses',{date:today,count:1});return 1;}
+  data.count++;lsSet('es_daily_analyses',data);return data.count;
+}
+function canRunFreeAnalysis(){return getDailyAnalysisCount()<2;}
+function showPricingModal(){document.getElementById('stripe-pricing-overlay').classList.add('active');}
+function closePricingModal(){document.getElementById('stripe-pricing-overlay').classList.remove('active');}
+document.addEventListener('click',function(e){if(e.target.id==='stripe-pricing-overlay')closePricingModal();});
+function updateAnalyzerBadge(){
+  const sub=lsGet('es_subscribed',false);
+  const badge=document.getElementById('analyzer-uses-badge');
+  if(!badge)return;
+  if(sub){badge.innerHTML='';return;}
+  const dailyLeft=2-getDailyAnalysisCount();
+  const totalLeft=getFreeAnalyses();
+  const left=Math.min(dailyLeft,totalLeft);
+  if(left>0){badge.innerHTML=`<span style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:6px 14px;color:#c9a84c;font-size:11px;letter-spacing:1px">${left} free analysis${left!==1?'es':''} remaining today</span>`;}
+  else{badge.innerHTML='<span style="background:rgba(201,76,106,0.15);border:1px solid rgba(201,76,106,0.3);border-radius:20px;padding:6px 14px;color:#c94c6a;font-size:11px;letter-spacing:1px">Daily limit reached — subscribe for unlimited</span>';}
+}
+async function runAnalysis(mode){
+  const sub=lsGet('es_subscribed',false);
+  if(!sub&&!canRunFreeAnalysis()){
+    showPricingModal();
+    return;
+  }
+  const free=getFreeAnalyses();
+  if(!sub&&free<=0){
+    showPricingModal();
+    return;
+  }
+  document.getElementById('analyzer-photo').style.display='none';
+  document.getElementById('analyzer-paste').style.display='none';
+  document.getElementById('analyzer-loading').style.display='block';
+  const context=mode==='photo'?document.getElementById('photo-context').value:document.getElementById('paste-context').value;
+  try{
+    let body;
+    if(mode==='photo'){body={mode:'photo',imageData:photoB64,context};}
+    else{body={mode:'paste',text:document.getElementById('convo-text').value,context};}
+    const res=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(res.status===401){document.getElementById('analyzer-loading').style.display='none';showAnalyzerMode(mode);showAuthModal('login','Sign in to use the Conversation Analyzer and save results across devices.');return;}
+    if(res.status===403){document.getElementById('analyzer-loading').style.display='none';showAnalyzerMode(mode);showPricingModal();return;}
+    if(!res.ok)throw new Error('Analysis request failed');
+    const data=await res.json();
+    const raw=data.content?.find(b=>b.type==='text')?.text||'{}';
+    currentAnalysisResult=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    if(!lsGet('es_subscribed',false)){useFreeAnalysis();incrementDailyAnalysis();}
+    updateAnalyzerBadge();
+    showAnalysisResult(currentAnalysisResult);
+  }catch(e){
+    document.getElementById('analyzer-loading').style.display='none';
+    document.getElementById('analyzer-result').style.display='block';
+    document.getElementById('analyzer-result').innerHTML=`<div class="card" style="text-align:center"><p style="color:#c94c6a;font-size:14px;margin-bottom:16px">Analysis failed. Please check your connection and try again.</p><button class="btn btn-outline" onclick="resetAnalyzer()">Try Again</button></div>`;
+  }
+}
+function riskColor(r){return{Low:'#4cc9a8',Moderate:'#c9a84c',High:'#e07a30',Severe:'#c94c6a'}[r]||'#7a6f98';}
+function sevColor(s){return{mild:'#c9a84c',moderate:'#e07a30',severe:'#c94c6a'}[s]||'#7a6f98';}
+function showAnalysisResult(result){
+  document.getElementById('analyzer-loading').style.display='none';
+  const rc=riskColor(result.overallRisk);
+  const pHTML=result.patterns?.length>0?`<div class="card" style="padding:20px"><span class="lbl">Patterns Detected</span>${result.patterns.map(p=>`<div class="pattern-item" style="border-left-color:${sevColor(p.severity)}"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="color:#f0eafa;font-size:13px">${p.name}</span><span style="padding:2px 8px;border-radius:10px;font-size:10px;background:${sevColor(p.severity)}22;color:${sevColor(p.severity)};text-transform:uppercase">${p.severity}</span></div>${p.quote?`<p style="color:#c9a84c;font-size:12px;font-style:italic;margin-bottom:4px">"${p.quote}"</p>`:''}<p style="color:#7a6f98;font-size:12px;line-height:1.6">${p.explanation}</p></div>`).join('')}</div>`:'';
+  const hHTML=result.healthySignals?.length>0?`<div class="card" style="padding:18px 20px"><span class="lbl">Healthy Signals</span>${result.healthySignals.map(s=>`<p style="color:#9d93b8;font-size:13px;line-height:1.6;margin-bottom:4px">✓ ${s}</p>`).join('')}</div>`:'';
+  const aHTML=result.affirmation?`<div class="card" style="text-align:center;padding:18px 20px"><span class="lbl">For You</span><p style="color:#f0eafa;font-size:15px;font-style:italic;line-height:1.75">"${result.affirmation}"</p></div>`:'';
+  document.getElementById('analyzer-result').style.display='block';
+  document.getElementById('analyzer-result').innerHTML=`<div class="card" style="text-align:center;padding:24px 20px"><span class="lbl">Overall Risk Level</span><div class="risk-badge" style="border:1.5px solid ${rc};background:${rc}18;color:${rc}">${result.overallRisk}</div><p style="color:#9d93b8;font-size:14px;line-height:1.75">${result.summary}</p></div>${pHTML}${hHTML}${aHTML}<button class="btn btn-gold" onclick="saveAnalysis()">Save to Diary</button><button class="btn btn-outline" onclick="resetAnalyzer()">Analyze Another</button>`;
+}
+function saveAnalysis(){if(currentAnalysisResult){addDiaryEntry({type:'analysis',result:currentAnalysisResult,date:fmtDate()});}resetAnalyzer();goTo('diary');}
+
+// ── DIARY ─────────────────────────────────────────────────────────────────────
+let selectedMood=null;
+function showDiaryNew(){document.getElementById('diary-new').style.display='block';document.getElementById('diary-list').style.display='none';}
+function hideDiaryNew(){document.getElementById('diary-new').style.display='none';document.getElementById('diary-list').style.display='block';renderDiary();}
+function selectMood(btn,label,color,icon){
+  selectedMood={label,color,icon};
+  document.querySelectorAll('.mood-btn').forEach(b=>{b.style.border='1px solid rgba(255,255,255,0.07)';b.style.background='rgba(255,255,255,0.02)';b.style.color='#7a6f98';});
+  btn.style.border=`1px solid ${color}`;btn.style.background=`${color}22`;btn.style.color=color;
+}
+function checkJournalReady(){document.getElementById('save-journal-btn').disabled=document.getElementById('journal-text').value.trim().length===0;}
+function saveJournal(){
+  const text=document.getElementById('journal-text').value.trim();if(!text)return;
+  addDiaryEntry({type:'journal',text,mood:selectedMood,date:fmtDate(),id:Date.now()});
+  document.getElementById('journal-text').value='';selectedMood=null;
+  document.querySelectorAll('.mood-btn').forEach(b=>{b.style.border='1px solid rgba(255,255,255,0.07)';b.style.background='rgba(255,255,255,0.02)';b.style.color='#7a6f98';});
+  hideDiaryNew();
+}
+
+function renderDiary(){
+  const diary=getDiary();
+  document.getElementById('diary-new').style.display='none';
+  document.getElementById('diary-list').style.display='block';
+  const list=document.getElementById('diary-list');
+  if(diary.length===0){list.innerHTML=`<div class="card" style="text-align:center;padding:36px 20px">${sunSVG(46)}<p style="color:#7a6f98;font-size:14px;margin-top:14px;line-height:1.7">Your diary is empty. Take a test or write your first entry.</p><button class="btn btn-outline" style="margin-top:18px" onclick="showDiaryNew()">Write First Entry</button></div>`;return;}
+  list.innerHTML=diary.map((e,i)=>{
+    const typeColor=e.type==='test'?'#6b2580':e.type==='analysis'?'#c94c6a':'#c9a84c';
+    const typeLabel=e.type==='test'?(e.testName||'Self Test'):e.type==='analysis'?'Analysis':'Journal';
+    const moodIcon=e.mood?`<span style="color:${e.mood.color};font-size:13px;margin-right:4px">${e.mood.icon}</span>`:'';
+    let preview='',fullContent='';
+    if(e.type==='test'){
+      const tags=e.flagged?.length>0?`<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px">${[...new Set(e.flagged)].map(t=>`<span class="tag" style="border-color:#7a6f98">${t}</span>`).join('')}</div>`:'';
+      preview=`<p style="color:${e.result.color};font-size:14px;margin-bottom:4px">${e.result.level}</p>${tags}`;
+      fullContent=`<p style="color:${e.result.color};font-size:15px;margin-bottom:8px">${e.result.level}</p><p style="color:#9d93b8;font-size:13px;line-height:1.7;margin-bottom:10px">${e.result.msg}</p><p style="color:#7a6f98;font-size:12px;line-height:1.7">${e.result.detail||''}</p>${tags}`;
+    }else if(e.type==='analysis'){
+      preview=`<p style="color:${riskColor(e.result?.overallRisk)};font-size:14px;margin-bottom:4px">${e.result?.overallRisk} Risk</p><p style="color:#7a6f98;font-size:12px;line-height:1.6">${(e.result?.summary||'').slice(0,80)}…</p>`;
+      fullContent=`<p style="color:${riskColor(e.result?.overallRisk)};font-size:15px;margin-bottom:8px">${e.result?.overallRisk} Risk</p><p style="color:#9d93b8;font-size:13px;line-height:1.7;margin-bottom:12px">${e.result?.summary||''}</p>${e.result?.affirmation?`<p style="color:#c9a84c;font-size:13px;font-style:italic;line-height:1.7">"${e.result.affirmation}"</p>`:''}`;
+    }else{
+      preview=`<p style="color:#9d93b8;font-size:13px;line-height:1.7">${e.text.length>90?e.text.slice(0,90)+'…':e.text}</p>`;
+      fullContent=`<p style="color:#9d93b8;font-size:14px;line-height:1.8">${e.text}</p>`;
+    }
+    return`<div class="diary-entry" id="de-${i}">
+      <div class="diary-header" onclick="toggleDiaryEntry(${i})">
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${moodIcon}<span class="tag" style="border-color:${typeColor}">${typeLabel}</span><span style="color:#7a6f98;font-size:10px;margin-left:auto">${e.date}</span></div>
+          ${preview}
+        </div>
+        <span style="color:#7a6f98;font-size:14px;margin-left:12px;flex-shrink:0" id="de-arrow-${i}">›</span>
+      </div>
+      <div class="diary-body" id="de-body-${i}">
+        ${fullContent}
+        ${e.type==='journal'?`<div style="margin-top:16px">
+          <textarea id="de-add-${i}" rows="3" placeholder="Add more to this entry…" style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px;color:#f0eafa;font-size:13px;line-height:1.7;margin-bottom:8px"></textarea>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm" onclick="appendEntry(${i})">Add to Entry</button>
+            <button class="btn btn-ghost btn-sm" style="color:#c94c6a;border-color:#c94c6a" onclick="deleteEntry(${i})">Delete</button>
+          </div>
+        </div>`:`<div style="margin-top:16px"><button class="btn btn-ghost btn-sm" style="color:#c94c6a;border-color:#c94c6a" onclick="deleteEntry(${i})">Delete Entry</button></div>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleDiaryEntry(i){
+  const body=document.getElementById('de-body-'+i);
+  const arrow=document.getElementById('de-arrow-'+i);
+  const open=body.classList.contains('open');
+  document.querySelectorAll('.diary-body').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('[id^="de-arrow-"]').forEach(a=>a.textContent='›');
+  if(!open){body.classList.add('open');arrow.textContent='⌄';}
+}
+
+function appendEntry(i){
+  const diary=getDiary();
+  const addText=document.getElementById('de-add-'+i)?.value.trim();
+  if(!addText)return;
+  diary[i].text+='\n\n'+fmtDate()+': '+addText;
+  saveDiary(diary);
+  renderDiary();
+}
+
+function deleteEntry(i){
+  if(!confirm('Delete this entry? This cannot be undone.'))return;
+  const diary=getDiary();diary.splice(i,1);saveDiary(diary);renderDiary();
+}
+
+// ── VAULT ─────────────────────────────────────────────────────────────────────
+let selectedVaultCat=null;
+function showVaultNew(){document.getElementById('vault-new').style.display='block';document.getElementById('vault-list').style.display='none';}
+function hideVaultNew(){document.getElementById('vault-new').style.display='none';document.getElementById('vault-list').style.display='block';renderVault();}
+function selectVaultCat(btn,label,color){
+  selectedVaultCat={label,color};
+  document.querySelectorAll('#vault-cats .mood-btn').forEach(b=>{b.style.border='1px solid rgba(255,255,255,0.07)';b.style.background='rgba(255,255,255,0.02)';b.style.color='#7a6f98';});
+  btn.style.border=`1px solid ${color}`;btn.style.background=`${color}22`;btn.style.color=color;
+  checkVaultReady();
+}
+function checkVaultReady(){
+  const title=document.getElementById('vault-title')?.value.trim();
+  const text=document.getElementById('vault-text')?.value.trim();
+  document.getElementById('save-vault-btn').disabled=!(title&&text&&selectedVaultCat);
+}
+function saveVaultEntry(){
+  const title=document.getElementById('vault-title').value.trim();
+  const text=document.getElementById('vault-text').value.trim();
+  if(!title||!text||!selectedVaultCat)return;
+  const vault=getVault();
+  vault.unshift({title,text,category:selectedVaultCat,date:fmtDate(),id:Date.now()});
+  saveVault(vault);
+  document.getElementById('vault-title').value='';
+  document.getElementById('vault-text').value='';
+  selectedVaultCat=null;
+  document.querySelectorAll('#vault-cats .mood-btn').forEach(b=>{b.style.border='1px solid rgba(255,255,255,0.07)';b.style.background='rgba(255,255,255,0.02)';b.style.color='#7a6f98';});
+  hideVaultNew();
+}
+const VAULT_ICONS={Win:'🏆',Memory:'✨',Gratitude:'🌱',Goal:'◎'};
+function renderVault(){
+  const vault=getVault();
+  document.getElementById('vault-new').style.display='none';
+  document.getElementById('vault-list').style.display='block';
+  const list=document.getElementById('vault-list');
+  if(vault.length===0){list.innerHTML=`<div class="card" style="text-align:center;padding:36px 20px">${sunSVG(46)}<p style="color:#7a6f98;font-size:14px;margin-top:14px;line-height:1.7">Your vault is empty. Start adding your wins, memories, and gratitude.</p><button class="btn btn-outline" style="margin-top:18px;border-color:#4cc9a8;color:#4cc9a8" onclick="showVaultNew()">Add First Entry</button></div>`;return;}
+  list.innerHTML=vault.map((e,i)=>`
+    <div class="vault-entry">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <span class="vault-cat" style="background:${e.category.color}22;color:${e.category.color};border:1px solid ${e.category.color}44">${VAULT_ICONS[e.category.label]||'◈'} ${e.category.label}</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="color:#7a6f98;font-size:10px">${e.date}</span>
+          <button onclick="deleteVaultEntry(${i})" style="background:none;border:none;color:#7a6f98;font-size:12px;cursor:pointer">✕</button>
+        </div>
+      </div>
+      <p style="color:#f0eafa;font-size:14px;margin-bottom:6px">${e.title}</p>
+      <p style="color:#9d93b8;font-size:13px;line-height:1.7">${e.text}</p>
+    </div>
+  `).join('');
+}
+function deleteVaultEntry(i){
+  if(!confirm('Remove this from your vault?'))return;
+  const vault=getVault();vault.splice(i,1);saveVault(vault);renderVault();
+}
+
+// ── FLAGS ─────────────────────────────────────────────────────────────────────
+const FLAGS=[
+  {name:'Love Bombing',desc:'Overwhelming affection early on to create dependency fast.',color:'#c94c6a'},
+  {name:'Gaslighting',desc:'Making you question your memory, perception, or sanity.',color:'#c94c6a'},
+  {name:'DARVO',desc:'Deny, Attack, Reverse Victim and Offender — flipping who is the abuser.',color:'#c94c6a'},
+  {name:'Silent Treatment',desc:'Weaponized withdrawal of communication as punishment.',color:'#e07a30'},
+  {name:'Isolation',desc:'Gradually cutting you off from your support network.',color:'#c94c6a'},
+  {name:'Triangulation',desc:'Using a third person to provoke jealousy or insecurity.',color:'#e07a30'},
+  {name:'Future Faking',desc:'Big promises that are never intended to be kept.',color:'#e07a30'},
+  {name:'Intermittent Reinforcement',desc:'Random rewards keep you hooked — the slot machine effect.',color:'#c94c6a'},
+  {name:'Blame Shifting',desc:'Your reaction is always the problem, never their action.',color:'#e07a30'},
+  {name:'Covert Contracts',desc:'Unspoken deals — doing things for you with hidden strings attached.',color:'#e07a30'},
+];
+function renderFlags(){
+  document.getElementById('flags-list').innerHTML=FLAGS.map((f,i)=>`
+    <div class="flag-item" onclick="toggleFlag(${i})" id="flag-${i}">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="width:7px;height:7px;border-radius:50%;background:${f.color};display:inline-block;flex-shrink:0"></span>
+          <span style="color:#f0eafa;font-size:14px">${f.name}</span>
+        </div>
+        <span style="color:#7a6f98;font-size:14px" id="fi-${i}">+</span>
+      </div>
+      <div style="display:none;color:#9d93b8;font-size:13px;line-height:1.7;margin-top:12px;padding-left:18px" id="fb-${i}">${f.desc}</div>
+    </div>
+  `).join('');
+}
+function toggleFlag(i){
+  const b=document.getElementById('fb-'+i),ic=document.getElementById('fi-'+i),item=document.getElementById('flag-'+i);
+  const open=b.style.display==='block';
+  b.style.display=open?'none':'block';ic.textContent=open?'+':'−';
+  item.style.borderColor=open?'rgba(201,168,76,0.12)':FLAGS[i].color+'55';
+}
+
+// ── MIRROR ────────────────────────────────────────────────────────────────────
+const PROMPTS=['What makes you feel empowered — and how can you welcome more of that into your life?','When are you most authentically yourself? What does that feel like?','What doors are you being called to walk through again — this time stronger?','Going in is going up. They are the same direction. What does going inward reveal today?','You are in charge. You are the boss of this process. What would you decide if you truly believed that?','What part of yourself have you shrunk to keep this person comfortable?','What boundary got crossed — and what would honoring it look like?','I will no longer live in a delusion. What is one truth you are ready to face?','The control you have is to say No. Where do you need to say it?','Knowledge is power. What do you already know that you have been afraid to name?','Which version of yourself showed up in that moment — and which do you want next time?','What are you tolerating that you would never accept for someone you love?'];
+let promptIdx=0;
+function nextPrompt(){promptIdx=(promptIdx+1)%PROMPTS.length;document.getElementById('mirror-prompt').textContent='"'+PROMPTS[promptIdx]+'"';}
+
+// ── TIMELINE ──────────────────────────────────────────────────────────────────
+function renderTimeline(){
+  const tests=getDiary().filter(e=>e.type==='test');
+  const el=document.getElementById('timeline-list');
+  if(tests.length===0){el.innerHTML=`<div class="card" style="text-align:center;padding:36px 20px"><p style="color:#7a6f98;font-size:14px;line-height:1.7">Take a test and save your results to begin tracking your journey over time.</p></div>`;return;}
+  el.innerHTML=`<div style="position:relative"><div style="position:absolute;left:20px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,#6b2580,transparent)"></div><div style="display:flex;flex-direction:column;gap:14px;padding-left:44px">${tests.map(e=>`<div style="position:relative"><div style="position:absolute;left:-32px;top:12px;width:13px;height:13px;border-radius:50%;background:${e.result.color};border:2px solid #07091a;box-shadow:0 0 8px ${e.result.color}88"></div><div class="card" style="padding:14px 16px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:${e.result.color};font-size:14px">${e.testName||'Self Test'} — ${e.result.level}</span><span style="color:#7a6f98;font-size:10px">${e.date}</span></div>${e.flagged?.length>0?`<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px">${[...new Set(e.flagged)].map(t=>`<span class="tag" style="border-color:#7a6f98">${t}</span>`).join('')}</div>`:''}</div></div>`).join('')}</div></div>`;
+}
+
+// ── SETTINGS ──────────────────────────────────────────────────────────────────
+function updateSettings(){
+  const t=getTrialInfo(),sub=lsGet('es_subscribed',false),founder=lsGet('es_founder_verified',false);
+  const statusEl=document.getElementById('sub-status'),btnEl=document.getElementById('sub-btn');
+  if(founder){statusEl.textContent='Founder Access';statusEl.style.color='#4cc9a8';btnEl.style.display='none';}
+  else if(sub){statusEl.textContent='Active — $3.69/month';statusEl.style.color='#4cc9a8';btnEl.style.display='none';}
+  else if(t.active){statusEl.textContent=`Free Trial — ${t.daysLeft} day${t.daysLeft!==1?'s':''} left`;statusEl.style.color='#c9a84c';btnEl.style.display='block';}
+  else{statusEl.textContent='Expired';statusEl.style.color='#c94c6a';btnEl.style.display='block';}
+}
+function showClearConfirm(){document.getElementById('clear-btn').style.display='none';document.getElementById('clear-confirm').style.display='block';}
+function hideClearConfirm(){document.getElementById('clear-btn').style.display='block';document.getElementById('clear-confirm').style.display='none';}
+async function clearAllData(){
+  try{await window.clearRemoteAccountData?.();}catch{alert('Your online data could not be cleared. Please check your connection and try again.');return;}
+  saveDiary([]);saveVault([]);lsSet('es_free_analyses',2);lsSet('es_daily_analyses',{date:'',count:0});hideClearConfirm();updateHome();alert('All data cleared.');
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function fmtDate(){return new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+
+// ── DOWNLOAD DATA ────────────────────────────────────────────────────────────
+function downloadMyData(){
+  const data={
+    exportDate:new Date().toISOString(),
+    appVersion:'2.0',
+    diary:getDiary(),
+    vault:getVault(),
+    trialStart:lsGet('es_trial_start',null),
+    founderVerified:lsGet('es_founder_verified',false),
+    subscribed:lsGet('es_subscribed',false),
+    freeAnalysesUsed:lsGet('es_free_analyses',0)
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='embodying-sane-data-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ── EMAIL SIGNUP ──────────────────────────────────────────────────────────────
+function submitSignup(){
+  const input=document.getElementById('signup-email');
+  const msg=document.getElementById('signup-msg');
+  const email=input.value.trim();
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg.textContent='Please enter a valid email.';msg.style.color='#c94c6a';msg.style.display='block';return;}
+  const signups=lsGet('es_signups',[]);
+  if(signups.includes(email)){msg.textContent='You\'re already signed up!';msg.style.color='#c9a84c';msg.style.display='block';return;}
+  signups.push(email);lsSet('es_signups',signups);
+  input.value='';msg.textContent='Welcome to the inner circle.';msg.style.color='#4cc9a8';msg.style.display='block';
+}
+
+// ── NETWORK & PROTOCOL DETECTION ─────────────────────────────────────────────
+function checkProtocol(){
+  const proto=window.location.protocol;
+  if(proto==='http:'||proto==='https:'){
+    document.getElementById('file-protocol-banner').style.display='none';
+    document.getElementById('app').style.paddingTop='';
+  }else if(proto==='file:'){
+    document.getElementById('file-protocol-banner').style.display='block';
+    document.getElementById('app').style.paddingTop='80px';
+  }
+}
+function updateNetworkBadge(){
+  const badge=document.getElementById('network-badge');
+  if(!navigator.onLine){badge.className='offline';badge.textContent='Offline';badge.style.display='block';}
+  else{badge.className='';badge.textContent='';badge.style.display='none';}
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',async ()=>{
+  checkProtocol();
+  updateNetworkBadge();
+  window.addEventListener('online',updateNetworkBadge);
+  window.addEventListener('offline',updateNetworkBadge);
+  await window.authReady;
+  initTrial();
+  const handledStripeReturn=await handleStripeReturn();
+  if(!handledStripeReturn)await syncSubscriptionAccess();
+  const d=fmtDate();
+  document.getElementById('privacy-date').textContent='Effective: '+d;
+  document.getElementById('refund-date').textContent='Effective: '+d;
+  document.getElementById('splash-sun').innerHTML=sunSVG(110);
+  document.getElementById('paywall-sun').innerHTML=sunSVG(80,true);
+  document.getElementById('home-sun').innerHTML=sunSVG(44);
+  document.getElementById('hero-sun').innerHTML=sunSVG(140);
+  document.getElementById('analyzer-sun').innerHTML=sunSVG(50);
+  document.getElementById('loading-sun').innerHTML=sunSVG(54);
+  document.getElementById('mirror-sun').innerHTML=sunSVG(52);
+  document.getElementById('mirror-prompt').textContent='"'+PROMPTS[0]+'"';
+  renderFlags();
+  updateHome();
+  updateTrialBanner();
+  setTimeout(()=>{
+    document.getElementById('splash').classList.add('hidden');
+    setTimeout(()=>document.getElementById('splash').style.display='none',500);
+    goTo('home');
+  },2400);
+});
+</script>
+<script type="module" src="/auth.js"></script>
+</body>
+</html>
