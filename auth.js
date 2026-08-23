@@ -347,6 +347,7 @@ const openStripeCheckout = () => {
   const url = new URL(window.STRIPE_LINK, window.location.href);
   url.searchParams.set("prefilled_email", currentUser.email);
   url.searchParams.set("client_reference_id", currentUser.id);
+  window.trackConversion?.("checkout_started");
   window.open(url.toString(), "_blank", "noopener");
 };
 

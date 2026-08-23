@@ -267,9 +267,10 @@ textarea{resize:vertical}
     <h2 style="color:#f0eafa;font-size:20px;font-weight:400;letter-spacing:-0.3px;margin-bottom:8px">The Knowledge is yours.</h2>
     <p style="color:#9d93b8;font-size:13px;line-height:1.7;margin-bottom:20px">Join our inner circle for weekly self-discovery metrics, pattern analysis, and tools for trauma healing.</p>
     <div id="email-signup-form" style="display:flex;gap:8px;max-width:360px;margin:0 auto">
-      <input id="signup-email" type="email" placeholder="Enter your email" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:12px 14px;color:#f0eafa;font-size:13px"/>
-      <button onclick="submitSignup()" style="background:linear-gradient(135deg,#6b2580,#c9a84c);border:none;border-radius:12px;padding:12px 20px;color:#07091a;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap">Join</button>
+      <input id="signup-email" type="email" autocomplete="email" placeholder="Enter your email" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:12px 14px;color:#f0eafa;font-size:13px"/>
+      <button id="signup-submit" onclick="submitSignup()" style="background:linear-gradient(135deg,#6b2580,#c9a84c);border:none;border-radius:12px;padding:12px 20px;color:#07091a;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;white-space:nowrap">Join</button>
     </div>
+    <label style="display:flex;gap:8px;align-items:flex-start;max-width:360px;margin:12px auto 0;text-align:left;color:#7a6f98;font-size:10px;line-height:1.5"><input id="signup-consent" type="checkbox" style="margin-top:2px"/> I agree to receive the inner-circle emails and can unsubscribe at any time.</label>
     <p id="signup-msg" style="color:#4cc9a8;font-size:12px;margin-top:10px;display:none"></p>
   </div>
 </div>
@@ -865,7 +866,7 @@ function openTest(idx){
   goTo('test-flow');
 }
 
-function startTestFlow(){
+function startTestFlow(){trackConversion('assessment_started');
   document.getElementById('tf-intro').style.display='none';
   document.getElementById('tf-quiz').style.display='block';
   loadTFQuestion();
@@ -1007,7 +1008,7 @@ function updateAnalyzerBadge(){
   if(left>0){badge.innerHTML=`<span style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:6px 14px;color:#c9a84c;font-size:11px;letter-spacing:1px">${left} free analysis${left!==1?'es':''} remaining today</span>`;}
   else{badge.innerHTML='<span style="background:rgba(201,76,106,0.15);border:1px solid rgba(201,76,106,0.3);border-radius:20px;padding:6px 14px;color:#c94c6a;font-size:11px;letter-spacing:1px">Daily limit reached — subscribe for unlimited</span>';}
 }
-async function runAnalysis(mode){
+async function runAnalysis(mode){trackConversion('analyzer_started');
   const sub=lsGet('es_subscribed',false);
   if(!sub&&!canRunFreeAnalysis()){
     showPricingModal();
@@ -1283,16 +1284,28 @@ function downloadMyData(){
   URL.revokeObjectURL(url);
 }
 
+// ── CONVERSION MEASUREMENT ─────────────────────────────────────────────────────
+function trackConversion(event){
+  fetch('/api/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event}),keepalive:true}).catch(()=>{});
+}
+
 // ── EMAIL SIGNUP ──────────────────────────────────────────────────────────────
-function submitSignup(){
+async function submitSignup(){
   const input=document.getElementById('signup-email');
+  const consent=document.getElementById('signup-consent');
+  const button=document.getElementById('signup-submit');
   const msg=document.getElementById('signup-msg');
   const email=input.value.trim();
   if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg.textContent='Please enter a valid email.';msg.style.color='#c94c6a';msg.style.display='block';return;}
-  const signups=lsGet('es_signups',[]);
-  if(signups.includes(email)){msg.textContent='You\'re already signed up!';msg.style.color='#c9a84c';msg.style.display='block';return;}
-  signups.push(email);lsSet('es_signups',signups);
-  input.value='';msg.textContent='Welcome to the inner circle.';msg.style.color='#4cc9a8';msg.style.display='block';
+  if(!consent.checked){msg.textContent='Please agree to receive emails first.';msg.style.color='#c94c6a';msg.style.display='block';return;}
+  button.disabled=true;button.textContent='Joining…';
+  try{
+    const response=await fetch('/api/inner-circle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,consent:true})});
+    const data=await response.json();
+    if(!response.ok)throw new Error(data.error||'Unable to save your signup');
+    input.value='';consent.checked=false;msg.textContent='Welcome to the inner circle.';msg.style.color='#4cc9a8';msg.style.display='block';
+  }catch(error){msg.textContent=error.message||'Unable to save your signup. Please try again.';msg.style.color='#c94c6a';msg.style.display='block';}
+  finally{button.disabled=false;button.textContent='Join';}
 }
 
 // ── NETWORK & PROTOCOL DETECTION ─────────────────────────────────────────────
