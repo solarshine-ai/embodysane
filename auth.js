@@ -223,6 +223,12 @@ const closeAuthModal = () => {
   setMessage("");
 };
 
+const continueFreeCheck = () => {
+  if (sessionStorage.getItem("es_start_free_check") !== "true") return;
+  sessionStorage.removeItem("es_start_free_check");
+  window.goTo?.("tests");
+};
+
 const afterLogin = async (user) => {
   currentUser = user;
   await hydrateAccount();
@@ -231,6 +237,7 @@ const afterLogin = async (user) => {
   window.updateHome?.();
   window.updateTrialBanner?.();
   window.updateSettings?.();
+  continueFreeCheck();
 };
 
 const submitPasswordAuth = async (event) => {
@@ -367,7 +374,12 @@ const initializeAuth = async () => {
   try {
     const callback = await handleAuthCallback();
     currentUser = callback?.user || (await getUser());
-    if (currentUser) await hydrateAccount();
+    if (currentUser) {
+      await hydrateAccount();
+      if (sessionStorage.getItem("es_start_free_check") === "true" && callback?.type !== "recovery") {
+        continueFreeCheck();
+      }
+    }
     if (callback?.type === "recovery" && localStorage.getItem("es_password_reset_requested")) {
       showPasswordReset();
     } else if (callback?.type === "recovery") {
@@ -392,6 +404,14 @@ window.showPasswordReset = showPasswordReset;
 window.submitNewPassword = submitNewPassword;
 window.signOut = signOut;
 window.openStripeCheckout = openStripeCheckout;
+window.startFreeCheck = () => {
+  if (currentUser) {
+    window.goTo?.("tests");
+    return;
+  }
+  sessionStorage.setItem("es_start_free_check", "true");
+  showAuthModal("signup", "Create your free account to begin your trial and keep your check results private and saved.");
+};
 window.queueAccountSync = queueAccountSync;
 window.clearRemoteAccountData = clearRemoteAccountData;
 window.refreshAccount = refreshAccount;
