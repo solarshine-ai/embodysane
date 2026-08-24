@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Embodying Sane | Relationship Empowerment & Support</title>
 <meta name="description" content="Embodying Sane helps individuals navigate, track, and heal from complex relationships with tools, diary logs, and boundary setting exercises."/>
 <meta name="keywords" content="relationship self discovery quiz, attachment style quiz, love language test, gaslighting test, am I being gaslit, toxic relationship test, people pleaser test, boundary test, manipulation patterns, emotional abuse awareness, trauma healing, relationship pattern analyzer"/>
@@ -367,6 +367,27 @@ textarea{resize:vertical}
       <p id="tf-result-msg" style="font-size:14px;line-height:1.8;margin-bottom:16px;color:#f0eafa"></p>
       <p id="tf-result-detail" style="font-size:13px;line-height:1.75;color:#9d93b8;margin-bottom:22px"></p>
       <div id="tf-result-tags" style="margin-bottom:20px"></div>
+
+      <!-- Email my result — Netlify Forms capture -->
+      <div id="tf-email-capture" style="border-top:1px solid rgba(201,168,76,0.12);margin:4px 0 20px;padding-top:20px;text-align:left">
+        <span class="lbl" style="text-align:center">Keep this result</span>
+        <p style="color:#9d93b8;font-size:12px;line-height:1.7;margin-bottom:14px;text-align:center">Have your result emailed to you, so it's yours to keep even if you clear this browser.</p>
+        <form id="tf-email-form" name="quiz-results" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="quiz-results">
+          <input type="hidden" name="testName" id="tf-email-testname" value="">
+          <input type="hidden" name="result" id="tf-email-result" value="">
+          <input type="hidden" name="resultLevel" id="tf-email-level" value="">
+          <p style="display:none"><label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <label for="tf-email-firstname" class="lbl" style="letter-spacing:2px">First name</label>
+          <input id="tf-email-firstname" class="auth-input" type="text" name="firstName" autocomplete="given-name" placeholder="What should we call you?" maxlength="80" required>
+          <label for="tf-email-address" class="lbl" style="letter-spacing:2px">Email address</label>
+          <input id="tf-email-address" class="auth-input" type="email" name="email" autocomplete="email" placeholder="you@example.com" maxlength="200" required>
+          <button id="tf-email-submit" class="btn btn-gold" type="submit" style="margin-top:4px">Email Me My Result</button>
+        </form>
+        <p id="tf-email-feedback" role="status" aria-live="polite" style="display:none;font-size:12px;line-height:1.7;text-align:center;margin-top:12px"></p>
+        <p style="color:#5f5678;font-size:10px;line-height:1.6;text-align:center;margin-top:12px">We'll email your result and occasional guidance. Unsubscribe any time. See our <button type="button" onclick="goTo('privacy')" style="background:none;border:none;color:#7a6f98;font-size:10px;text-decoration:underline;padding:0">Privacy Policy</button>.</p>
+      </div>
+
       <button class="btn btn-gold" onclick="saveTFResult()">Save to Diary</button>
       <button class="btn btn-outline" onclick="retakeTF()">Retake Test</button>
     </div>
@@ -973,10 +994,75 @@ function showTFResult(){
   const tags=r.tags?.length>0?`<span class="lbl">Patterns Detected</span><div style="display:flex;flex-wrap:wrap;gap:7px;justify-content:center">${[...new Set(r.tags)].map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:'';
   document.getElementById('tf-result-tags').innerHTML=tags;
   window._pendingTF={type:'test',testName:currentTest.name,result:r,flagged:r.tags||[],date:fmtDate()};
+  prepTFEmailForm(currentTest.name,r);
 }
 
 function saveTFResult(){if(window._pendingTF){addDiaryEntry(window._pendingTF);window._pendingTF=null;}goTo('diary');}
-function retakeTF(){tfAnswers=[];tfCurrent=0;tfSelected=null;document.getElementById('tf-intro').style.display='block';document.getElementById('tf-quiz').style.display='none';document.getElementById('tf-result').style.display='none';}
+function retakeTF(){tfAnswers=[];tfCurrent=0;tfSelected=null;document.getElementById('tf-intro').style.display='block';document.getElementById('tf-quiz').style.display='none';document.getElementById('tf-result').style.display='none';resetTFEmailForm();}
+
+// ── EMAIL MY RESULT (Netlify Forms) ─────────────────────────────────────
+// Sends the visitor's real quiz outcome to Netlify Forms. Submissions appear under
+// Project configuration > Forms as the "quiz-results" form.
+function tfEmailFeedback(msg,color){
+  const el=document.getElementById('tf-email-feedback');
+  if(!el)return;
+  el.textContent=msg;
+  el.style.color=color;
+  el.style.display=msg?'block':'none';
+}
+
+function resetTFEmailForm(){
+  const form=document.getElementById('tf-email-form');
+  if(!form)return;
+  form.style.display='block';
+  const btn=document.getElementById('tf-email-submit');
+  if(btn){btn.disabled=false;btn.textContent='Email Me My Result';}
+  tfEmailFeedback('','');
+}
+
+// Records the real result on the form so the submission carries the actual outcome.
+function prepTFEmailForm(testName,r){
+  resetTFEmailForm();
+  const nameField=document.getElementById('tf-email-testname');
+  const resultField=document.getElementById('tf-email-result');
+  const levelField=document.getElementById('tf-email-level');
+  if(nameField)nameField.value=testName||'';
+  if(levelField)levelField.value=r.level||'';
+  if(resultField){
+    const tags=[...new Set(r.tags||[])];
+    resultField.value=[r.level,r.msg,r.detail,tags.length?'Patterns detected: '+tags.join(', '):'']
+      .filter(Boolean).join('\n\n');
+  }
+  // Prefill from the signed-in account when we have it, so people don't retype.
+  const emailField=document.getElementById('tf-email-address');
+  if(emailField&&!emailField.value){
+    const known=document.querySelector('[data-account-email]')?.textContent?.trim()||'';
+    if(known.includes('@'))emailField.value=known;
+  }
+}
+
+document.getElementById('tf-email-form')?.addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const form=e.currentTarget;
+  const btn=document.getElementById('tf-email-submit');
+  if(btn?.disabled)return;
+  if(btn){btn.disabled=true;btn.textContent='Sending\u2026';}
+  tfEmailFeedback('','');
+  try{
+    const res=await fetch('/',{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:new URLSearchParams(new FormData(form)).toString()
+    });
+    if(!res.ok)throw new Error('Request failed with status '+res.status);
+    const sentTo=document.getElementById('tf-email-address')?.value?.trim()||'your inbox';
+    form.style.display='none';
+    tfEmailFeedback('Thank you \u2014 your result is on its way to '+sentTo+'.','#4cc9a8');
+  }catch(err){
+    if(btn){btn.disabled=false;btn.textContent='Email Me My Result';}
+    tfEmailFeedback("That didn't go through. Please check your connection and try again.",'#c94c6a');
+  }
+});
 
 // ── CONVERSATION ANALYZER ─────────────────────────────────────────────────────
 function showAnalyzerMode(mode){
