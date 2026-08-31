@@ -1410,7 +1410,7 @@ function downloadMyData(){
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;
-  a.download='embodying-sane-data-'+new Date().toISOString().slice(0,10)+'.json';
+  a.download='embodysane-data-'+new Date().toISOString().slice(0,10)+'.json';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -1479,6 +1479,5 @@ window.addEventListener('DOMContentLoaded',async ()=>{
 });
 </script>
 <script type="module" src="/auth.js"></script>
-<script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
 </body>
 </html>

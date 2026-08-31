@@ -1,9 +1,22 @@
+/**
+ * Stripe webhook receiver, served at POST /api/stripe-webhooks.
+ *
+ * Keeps stripe_entitlements in step with Stripe and links each entitlement to
+ * the Identity account that owns it, so renewals, cancellations and failed
+ * payments change access without the customer returning to the site.
+ *
+ * Required env vars (names are case-sensitive):
+ *   STRIPE_SECRET_KEY       live key (sk_live_...) once the site is published
+ *   STRIPE_WEBHOOK_SECRET   signing secret (whsec_...) for this endpoint
+ *
+ * Without both, the endpoint returns 503 and processes nothing.
+ */
 import Stripe from "stripe";
 import {
   linkAccountToStripe,
   linkAccountToStripeByEmail,
-} from "../../../db/accounts.js";
-import { saveStripeEntitlement } from "../../../db/subscriptions.js";
+} from "../../db/accounts.js";
+import { saveStripeEntitlement } from "../../db/subscriptions.js";
 
 const jsonResponse = (body, status = 200) =>
   Response.json(body, {
@@ -22,10 +35,7 @@ const isPublishedProduction = (context) => context.deploy?.published === true;
 
 export default async (req, context) => {
   const secretKey = Netlify.env.get("STRIPE_SECRET_KEY");
-  const webhookSecret =
-    Netlify.env.get("secret_webhook_key") ||
-    Netlify.env.get("stripe_webhook_key") ||
-    Netlify.env.get("STRIPE_WEBHOOK_SECRET");
+  const webhookSecret = Netlify.env.get("STRIPE_WEBHOOK_SECRET");
 
   if (!secretKey || !webhookSecret) {
     console.error("Stripe webhook environment variables are not configured.");
