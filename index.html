@@ -397,7 +397,8 @@ textarea{resize:vertical}
 <!-- CONVERSATION ANALYZER -->
 <div class="screen" id="screen-analyzer">
   <span class="lbl">AI-Powered</span>
-  <h2 style="color:#f0eafa;font-size:20px;font-weight:400;margin-bottom:22px">Conversation Analyzer</h2>
+  <h2 style="color:#f0eafa;font-size:20px;font-weight:400;margin-bottom:14px">Conversation Analyzer</h2>
+  <div id="analyzer-uses-badge" style="text-align:center;margin-bottom:18px"></div>
   <div id="analyzer-pick">
     <div class="card" style="text-align:center;padding:30px 20px">
       <div style="display:flex;justify-content:center;margin-bottom:16px" id="analyzer-sun"></div>
@@ -663,6 +664,10 @@ textarea{resize:vertical}
       <li>🛡️ <strong>Boundary Building Maps:</strong> Step-by-step tools for self-discovery.</li>
     </ul>
     <button class="spm-cta" onclick="openStripeCheckout()">Unlock Unlimited Access</button>
+    <div id="spm-packs" style="display:none;margin-top:26px;padding-top:24px;border-top:1px solid #eaeaea">
+      <p style="font-size:0.9rem;color:#666;margin:0 0 14px">Not ready for a subscription? Buy analyses outright.</p>
+      <div id="spm-pack-buttons" style="display:grid;gap:10px"></div>
+    </div>
   </div>
 </div>
 
@@ -1112,43 +1117,76 @@ function handlePhoto(e){
 }
 function removePhoto(){photoB64=null;document.getElementById('photo-preview').style.display='none';document.getElementById('upload-zone').style.display='block';document.getElementById('analyze-photo-btn').disabled=true;document.getElementById('photo-input').value='';}
 function checkPasteReady(){document.getElementById('analyze-paste-btn').disabled=document.getElementById('convo-text').value.trim().length<20;}
-function getFreeAnalyses(){return lsGet('es_free_analyses',2);}
-function useFreeAnalysis(){const n=getFreeAnalyses()-1;lsSet('es_free_analyses',n);return n;}
-function getDailyAnalysisCount(){
-  const today=new Date().toISOString().slice(0,10);
-  const data=lsGet('es_daily_analyses',{date:'',count:0});
-  if(data.date!==today)return 0;
-  return data.count;
-}
-function incrementDailyAnalysis(){
-  const today=new Date().toISOString().slice(0,10);
-  const data=lsGet('es_daily_analyses',{date:'',count:0});
-  if(data.date!==today){lsSet('es_daily_analyses',{date:today,count:1});return 1;}
-  data.count++;lsSet('es_daily_analyses',data);return data.count;
-}
-function canRunFreeAnalysis(){return getDailyAnalysisCount()<2;}
-function showPricingModal(){document.getElementById('stripe-pricing-overlay').classList.add('active');}
+// The old localStorage analysis counters lived here. They are gone on purpose:
+// they were the only limit on a feature that costs money per run, and clearing
+// site data reset them. Usage is now metered server-side against
+// app_accounts.analysis_credits -- see db/credits.ts.
+function showPricingModal(){renderCreditPacks();document.getElementById('stripe-pricing-overlay').classList.add('active');}
 function closePricingModal(){document.getElementById('stripe-pricing-overlay').classList.remove('active');}
 document.addEventListener('click',function(e){if(e.target.id==='stripe-pricing-overlay')closePricingModal();});
+// The server owns the credit balance; window.esCredits is the latest copy it
+// sent. Until it arrives, show nothing rather than a guess.
+function getCredits(){return window.esCredits||null;}
 function updateAnalyzerBadge(){
-  const sub=lsGet('es_subscribed',false);
   const badge=document.getElementById('analyzer-uses-badge');
   if(!badge)return;
-  if(sub){badge.innerHTML='';return;}
-  const dailyLeft=2-getDailyAnalysisCount();
-  const totalLeft=getFreeAnalyses();
-  const left=Math.min(dailyLeft,totalLeft);
-  if(left>0){badge.innerHTML=`<span style="background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:6px 14px;color:#c9a84c;font-size:11px;letter-spacing:1px">${left} free analysis${left!==1?'es':''} remaining today</span>`;}
-  else{badge.innerHTML='<span style="background:rgba(201,76,106,0.15);border:1px solid rgba(201,76,106,0.3);border-radius:20px;padding:6px 14px;color:#c94c6a;font-size:11px;letter-spacing:1px">Daily limit reached — subscribe for unlimited</span>';}
+  const c=getCredits();
+  if(!c){badge.innerHTML='';return;}
+  const pill=(bg,br,fg,txt)=>`<span style="background:${bg};border:1px solid ${br};border-radius:20px;padding:6px 14px;color:${fg};font-size:11px;letter-spacing:1px">${txt}</span>`;
+  if(c.unlimited){badge.innerHTML=pill('rgba(76,201,168,0.15)','rgba(76,201,168,0.3)','#4cc9a8','Unlimited analyses');return;}
+  const left=c.credits??0;
+  if(left>0){badge.innerHTML=pill('rgba(201,168,76,0.15)','rgba(201,168,76,0.3)','#c9a84c',`${left} analysis credit${left!==1?'s':''} remaining`);}
+  else{badge.innerHTML=pill('rgba(201,76,106,0.15)','rgba(201,76,106,0.3)','#c94c6a','No credits left — get more to continue');}
+}
+
+// ── CREDIT PACKS ─────────────────────────────────────────────────────────────
+function renderCreditPacks(){
+  const wrap=document.getElementById('spm-packs');
+  const host=document.getElementById('spm-pack-buttons');
+  if(!wrap||!host)return;
+  const packs=getCredits()?.packs||[];
+  if(!packs.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  host.innerHTML=packs.map(p=>`<button class="spm-cta" style="background:#fff;color:#111;border:1px solid #ddd" onclick="buyCredits('${p.id}')">${p.label}</button>`).join('');
+}
+async function buyCredits(packId){
+  const tab=window.open('','_blank','noopener');
+  try{
+    const res=await fetch('/api/buy-credits',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({packId})});
+    const data=await res.json().catch(()=>({}));
+    if(res.ok&&data.url){if(tab)tab.location=data.url;else window.location.assign(data.url);return;}
+    tab?.close();
+    if(res.status===401){showAuthModal('login','Sign in to buy analysis credits.');return;}
+    alert(data.error||'Credit packs are not available right now.');
+  }catch{tab?.close();alert('Could not start checkout. Please try again.');}
+}
+
+// After buying a pack, Stripe returns here with ?credits_session_id=... We
+// confirm it server-side and show the new balance immediately rather than
+// waiting for the webhook to land.
+async function handleCreditsReturn(){
+  const params=new URLSearchParams(window.location.search);
+  const sessionId=params.get('credits_session_id');
+  if(!sessionId)return false;
+  params.delete('credits_session_id');
+  history.replaceState(null,'',window.location.pathname+(params.toString()?'?'+params.toString():''));
+  try{
+    const res=await fetch('/api/verify-credits',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({credits_session_id:sessionId})});
+    const data=await res.json();
+    if(data.granted){
+      window.applyCreditState?.(data.credits);
+      alert(`Credits added. You now have ${data.credits?.credits??0} analyses available.`);
+    }else if(res.status===401){showAuthModal('login','Sign in with the same email used at checkout to collect your credits.');}
+    else{alert("We couldn't confirm that purchase yet. If you were charged, please email support@embodysane.com.");}
+  }catch{alert("We couldn't confirm that purchase yet. If you were charged, please email support@embodysane.com.");}
+  return true;
 }
 async function runAnalysis(mode){
-  const sub=lsGet('es_subscribed',false);
-  if(!sub&&!canRunFreeAnalysis()){
-    showPricingModal();
-    return;
-  }
-  const free=getFreeAnalyses();
-  if(!sub&&free<=0){
+  // Only a courtesy check so we do not send a request that is certain to fail.
+  // The server enforces the real limit and is the only thing that can spend a
+  // credit, so a stale or edited local copy cannot buy a free analysis.
+  const c=getCredits();
+  if(c&&!c.canAnalyze){
     showPricingModal();
     return;
   }
@@ -1163,11 +1201,21 @@ async function runAnalysis(mode){
     const res=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(res.status===401){document.getElementById('analyzer-loading').style.display='none';showAnalyzerMode(mode);showAuthModal('login','Sign in to use the Conversation Analyzer and save results across devices.');return;}
     if(res.status===403){document.getElementById('analyzer-loading').style.display='none';showAnalyzerMode(mode);showPricingModal();return;}
+    if(res.status===402){
+      // Out of credits. The response carries the authoritative balance.
+      const out=await res.json().catch(()=>({}));
+      if(out.credits)window.applyCreditState?.(out.credits);
+      document.getElementById('analyzer-loading').style.display='none';
+      showAnalyzerMode(mode);
+      showPricingModal();
+      return;
+    }
     if(!res.ok)throw new Error('Analysis request failed');
     const data=await res.json();
     const raw=data.content?.find(b=>b.type==='text')?.text||'{}';
     currentAnalysisResult=JSON.parse(raw.replace(/```json|```/g,'').trim());
-    if(!lsGet('es_subscribed',false)){useFreeAnalysis();incrementDailyAnalysis();}
+    // The server already debited the credit and returned the new balance.
+    if(data.credits)window.applyCreditState?.(data.credits);
     updateAnalyzerBadge();
     showAnalysisResult(currentAnalysisResult);
   }catch(e){
@@ -1454,8 +1502,9 @@ window.addEventListener('DOMContentLoaded',async ()=>{
   window.addEventListener('offline',updateNetworkBadge);
   await window.authReady;
   initTrial();
+  const handledCreditsReturn=await handleCreditsReturn();
   const handledStripeReturn=await handleStripeReturn();
-  if(!handledStripeReturn)await syncSubscriptionAccess();
+  if(!handledStripeReturn&&!handledCreditsReturn)await syncSubscriptionAccess();
   const d=fmtDate();
   document.getElementById('privacy-date').textContent='Effective: '+d;
   document.getElementById('refund-date').textContent='Effective: '+d;

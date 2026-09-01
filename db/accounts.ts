@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { db } from "./index.js";
 import { appAccounts, type AccountData } from "./schema.js";
 import { findStripeEntitlementForAccount } from "./subscriptions.js";
+import { CREDIT_CONFIG } from "../lib/credit-packs.mjs";
 
 const TRIAL_DAYS = 3;
 
@@ -23,7 +24,14 @@ export async function ensureAppAccount(user: IdentityAccount) {
   if (!account) {
     [account] = await db
       .insert(appAccounts)
-      .values({ identityUserId: user.id, email })
+      // Set the starting balance explicitly rather than leaning on the column
+      // default, so lib/credit-packs.mjs is genuinely the one place that decides
+      // it. The column default stays as a backstop for rows created elsewhere.
+      .values({
+        identityUserId: user.id,
+        email,
+        analysisCredits: CREDIT_CONFIG.signupCredits,
+      })
       .onConflictDoNothing({ target: appAccounts.identityUserId })
       .returning();
 
