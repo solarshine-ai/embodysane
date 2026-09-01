@@ -339,15 +339,42 @@ const signOut = async () => {
   location.reload();
 };
 
-const openStripeCheckout = () => {
-  if (!currentUser?.email) {
-    showAuthModal("signup", "Create or sign in to an account before subscribing, so access follows you across devices.");
-    return;
-  }
+// Falls back to the Payment Link so a missing STRIPE_PRICE_ID, or any Stripe
+// outage on session creation, never leaves the subscribe button dead.
+const openPaymentLinkFallback = () => {
   const url = new URL(window.STRIPE_LINK, window.location.href);
   url.searchParams.set("prefilled_email", currentUser.email);
   url.searchParams.set("client_reference_id", currentUser.id);
   window.open(url.toString(), "_blank", "noopener");
+};
+
+const openStripeCheckout = async () => {
+  if (!currentUser?.email) {
+    showAuthModal("signup", "Create or sign in to an account before subscribing, so access follows you across devices.");
+    return;
+  }
+  // Stripe must be reached from a user gesture or the popup gets blocked, so the
+  // tab is opened synchronously and navigated once the session URL comes back.
+  const tab = window.open("", "_blank", "noopener");
+  try {
+    const response = await fetch("/api/create-checkout", { method: "POST" });
+    const data = await response.json().catch(() => ({}));
+    if (response.ok && data.url) {
+      if (tab) tab.location = data.url;
+      else window.location.assign(data.url);
+      return;
+    }
+    if (response.status === 401) {
+      tab?.close();
+      showAuthModal("login", "Sign in again to continue to checkout.");
+      return;
+    }
+    throw new Error(data.error || `Checkout unavailable (${response.status})`);
+  } catch (error) {
+    console.error("Falling back to the Stripe Payment Link.", error);
+    tab?.close();
+    openPaymentLinkFallback();
+  }
 };
 
 const clearRemoteAccountData = async () => {
