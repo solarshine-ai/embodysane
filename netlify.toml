@@ -8,3 +8,14 @@
   for = "/sitemap.xml"
   [headers.values]
     Content-Type = "application/xml; charset=utf-8"
+
+# Preview Servers (and local `netlify dev`) serve this project as a static site
+# from the repo root with the /api/* functions emulated alongside it. Pinning the
+# framework stops auto-detection from mistaking the project for a bundler app and
+# starting a server that never serves index.html. Port assignment is left to the
+# platform so the Preview Server can pick a free port in its container; override
+# it in the Netlify UI if you need a fixed one for local work only.
+[dev]
+  framework = "#static"
+  publish = "."
+  autoLaunch = false
