@@ -68,6 +68,19 @@ const hasPersonalData = (data) =>
   data.freeAnalyses !== 2 ||
   Boolean(data.dailyAnalyses?.date);
 
+/**
+ * Caches the server's credit balance for display.
+ *
+ * Deliberately not written through PRIVATE_KEYS/localStorage as a source of
+ * truth: the server decides what an account can afford, and every analyzer
+ * response carries a fresh balance.
+ */
+const applyCreditState = (credits) => {
+  window.esCredits = credits;
+  window.updateAnalyzerBadge?.();
+  window.updateHome?.();
+};
+
 const applyAccountState = (payload) => {
   accountState = payload;
   window.accountSyncPaused = true;
@@ -79,6 +92,10 @@ const applyAccountState = (payload) => {
   writeJson("es_founder_verified", payload.access.founderAccess === true);
   writeJson("es_subscribed", payload.access.subscriptionActive === true);
   window.accountSyncPaused = false;
+  // Analyzer credits are authoritative on the server. This copy is only so the
+  // badge can render without waiting on a request -- it is never trusted to
+  // decide whether an analysis may run.
+  if (payload.credits) applyCreditState(payload.credits);
   updateAuthUi();
 };
 
@@ -422,6 +439,7 @@ window.openStripeCheckout = openStripeCheckout;
 window.queueAccountSync = queueAccountSync;
 window.clearRemoteAccountData = clearRemoteAccountData;
 window.refreshAccount = refreshAccount;
+window.applyCreditState = applyCreditState;
 window.getCurrentAccountUser = () => currentUser;
 window.authReady = initializeAuth();
 

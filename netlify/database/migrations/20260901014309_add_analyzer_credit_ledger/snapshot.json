@@ -1,0 +1,541 @@
+{
+  "version": "8",
+  "dialect": "postgres",
+  "id": "915150eb-0122-4e1b-aed3-897a2204af6b",
+  "prevIds": [
+    "a37dd79e-5434-4c32-908f-48ea8a9dc675"
+  ],
+  "ddl": [
+    {
+      "isRlsEnabled": false,
+      "name": "app_accounts",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "credit_purchases",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "stripe_entitlements",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "identity_user_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "email",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "stripe_customer_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "trial_started_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "name": "founder_access",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "name": "data_initialized",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "3",
+      "generated": null,
+      "identity": null,
+      "name": "analysis_credits",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "0",
+      "generated": null,
+      "identity": null,
+      "name": "analyses_used",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "credits_renewed_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "jsonb",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'{\"diary\":[],\"vault\":[],\"freeAnalyses\":2,\"dailyAnalyses\":{\"date\":\"\",\"count\":0}}'",
+      "generated": null,
+      "identity": null,
+      "name": "account_data",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "app_accounts"
+    },
+    {
+      "type": "serial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "credit_purchases"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "stripe_checkout_session_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "credit_purchases"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "identity_user_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "credit_purchases"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "customer_email",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "credit_purchases"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "stripe_customer_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "credit_purchases"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "pack_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "credit_purchases"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "credits",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "credit_purchases"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "amount_cents",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "credit_purchases"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "credit_purchases"
+    },
+    {
+      "type": "serial",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "stripe_entitlements"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "stripe_customer_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "stripe_entitlements"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "stripe_subscription_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "stripe_entitlements"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "checkout_session_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "stripe_entitlements"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "customer_email",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "stripe_entitlements"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "status",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "stripe_entitlements"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "false",
+      "generated": null,
+      "identity": null,
+      "name": "access_active",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "stripe_entitlements"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "last_stripe_event_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "stripe_entitlements"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "last_stripe_event_created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "stripe_entitlements"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "stripe_entitlements"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "stripe_entitlements"
+    },
+    {
+      "columns": [
+        "identity_user_id"
+      ],
+      "nameExplicit": false,
+      "name": "app_accounts_pkey",
+      "schema": "public",
+      "table": "app_accounts",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "credit_purchases_pkey",
+      "schema": "public",
+      "table": "credit_purchases",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "stripe_entitlements_pkey",
+      "schema": "public",
+      "table": "stripe_entitlements",
+      "entityType": "pks"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "email"
+      ],
+      "nullsNotDistinct": false,
+      "name": "app_accounts_email_key",
+      "schema": "public",
+      "table": "app_accounts",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "stripe_customer_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "app_accounts_stripe_customer_id_key",
+      "schema": "public",
+      "table": "app_accounts",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "stripe_checkout_session_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "credit_purchases_stripe_checkout_session_id_key",
+      "schema": "public",
+      "table": "credit_purchases",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "stripe_customer_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "stripe_entitlements_stripe_customer_id_key",
+      "schema": "public",
+      "table": "stripe_entitlements",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "stripe_subscription_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "stripe_entitlements_stripe_subscription_id_key",
+      "schema": "public",
+      "table": "stripe_entitlements",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "checkout_session_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "stripe_entitlements_checkout_session_id_key",
+      "schema": "public",
+      "table": "stripe_entitlements",
+      "entityType": "uniques"
+    }
+  ],
+  "renames": []
+}

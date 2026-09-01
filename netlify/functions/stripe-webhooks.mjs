@@ -20,6 +20,7 @@ import {
   linkAccountToStripe,
   linkAccountToStripeByEmail,
 } from "../../db/accounts.js";
+import { applyCreditPurchase } from "../../db/credits.js";
 import { saveStripeEntitlement } from "../../db/subscriptions.js";
 
 const jsonResponse = (body, status = 200) =>
@@ -88,6 +89,46 @@ export default async (req, context) => {
       case "checkout.session.async_payment_succeeded":
       case "checkout.session.async_payment_failed": {
         const session = stripeEvent.data.object;
+
+        // A one-time payment is a credit pack, not a subscription. Grant the
+        // credits and stop -- writing an entitlement row here would claim the
+        // customer has ongoing access they did not buy.
+        if (session.mode === "payment") {
+          const paid =
+            stripeEvent.type !== "checkout.session.async_payment_failed" &&
+            session.status === "complete" &&
+            (session.payment_status === "paid" ||
+              session.payment_status === "no_payment_required");
+          if (!paid) break;
+
+          const credits = Number(session.metadata?.credit_amount);
+          if (!Number.isFinite(credits) || credits <= 0) {
+            console.error(
+              `Credit-pack session ${session.id} carried no usable credit_amount metadata.`,
+            );
+            break;
+          }
+
+          // Idempotent: a webhook retry, or the customer's browser returning to
+          // the site, cannot grant the same pack twice.
+          const applied = await applyCreditPurchase({
+            stripeCheckoutSessionId: session.id,
+            identityUserId: session.client_reference_id || session.metadata?.identity_user_id || null,
+            customerEmail:
+              session.customer_details?.email || session.customer_email || null,
+            stripeCustomerId: stripeId(session.customer),
+            packId: session.metadata?.credit_pack_id || null,
+            credits,
+            amountCents: session.amount_total ?? null,
+          });
+          console.log(
+            applied
+              ? `Granted ${credits} analyzer credits for session ${session.id}.`
+              : `Credit pack ${session.id} was already applied; ignoring replay.`,
+          );
+          break;
+        }
+
         if (session.mode !== "subscription") break;
 
         const accessActive =

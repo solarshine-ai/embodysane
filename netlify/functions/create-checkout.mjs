@@ -47,6 +47,30 @@ const resolveOrigin = (req) => {
   }
 };
 
+/**
+ * Tolerates a price id that was pasted without its `price_` prefix.
+ *
+ * This is not hypothetical tidying: STRIPE_PRICE_ID was configured in the
+ * Netlify UI as "1Tlf...", and an id Stripe cannot resolve produces the exact
+ * silent failure this endpoint exists to prevent -- the session create throws,
+ * the front end falls back to the Payment Link, and client_reference_id is lost,
+ * so the payment succeeds and the customer gets nothing.
+ *
+ * Stripe ids are `<object>_<suffix>` and a bare suffix is unambiguous, so the
+ * prefix is restored rather than failing the sale. It is logged loudly because
+ * the environment variable is still wrong and should be fixed at the source;
+ * `npm run verify:stripe` reports it as a failure.
+ */
+const normalizePriceId = (raw) => {
+  const value = (raw || "").trim();
+  if (!value || value.startsWith("price_")) return value;
+  console.error(
+    `STRIPE_PRICE_ID is "${value}", which is missing the "price_" prefix. ` +
+      "Using price_" + value + " for this session; fix the environment variable.",
+  );
+  return `price_${value}`;
+};
+
 export default async (req, context) => {
   try {
     const user = await getUser();
@@ -55,7 +79,7 @@ export default async (req, context) => {
     }
 
     const secretKey = Netlify.env.get("STRIPE_SECRET_KEY");
-    const priceId = Netlify.env.get("STRIPE_PRICE_ID");
+    const priceId = normalizePriceId(Netlify.env.get("STRIPE_PRICE_ID"));
 
     if (!secretKey) {
       return json({ error: "Checkout is not configured yet.", checkoutUnavailable: true }, 503);
