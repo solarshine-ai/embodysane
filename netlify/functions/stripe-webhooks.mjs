@@ -8,6 +8,10 @@
  * Required env vars (names are case-sensitive):
  *   STRIPE_SECRET_KEY       live key (sk_live_...) once the site is published
  *   STRIPE_WEBHOOK_SECRET   signing secret (whsec_...) for this endpoint
+ *                           STRIPE_WEBHOOK_KEY is accepted as an alias, because
+ *                           that is the name the site was originally configured
+ *                           with; without an alias the endpoint 503s on every
+ *                           delivery and entitlements silently stop updating.
  *
  * Without both, the endpoint returns 503 and processes nothing.
  */
@@ -35,7 +39,9 @@ const isPublishedProduction = (context) => context.deploy?.published === true;
 
 export default async (req, context) => {
   const secretKey = Netlify.env.get("STRIPE_SECRET_KEY");
-  const webhookSecret = Netlify.env.get("STRIPE_WEBHOOK_SECRET");
+  const webhookSecret =
+    Netlify.env.get("STRIPE_WEBHOOK_SECRET") ||
+    Netlify.env.get("STRIPE_WEBHOOK_KEY");
 
   if (!secretKey || !webhookSecret) {
     console.error("Stripe webhook environment variables are not configured.");
@@ -172,6 +178,33 @@ export default async (req, context) => {
           accessActive,
           ...eventMetadata,
         });
+        break;
+      }
+
+      // Ported from the Stripe Ruby/Sinatra webhook sample. These two are
+      // logged rather than written to stripe_entitlements on purpose: this site
+      // sells one recurring subscription, so invoice.paid and
+      // customer.subscription.* are the authoritative source for access. A
+      // PaymentIntent carries no subscription id, so recording one would
+      // overwrite the entitlement row's status with a value that does not
+      // describe the subscription -- and stripe_customer_id is UNIQUE, so the
+      // write would land on the real row rather than beside it.
+      case "payment_intent.succeeded": {
+        const paymentIntent = stripeEvent.data.object;
+        console.log(
+          `PaymentIntent ${paymentIntent.id} succeeded for ` +
+            `${paymentIntent.amount} ${paymentIntent.currency}; ` +
+            `access is unchanged (driven by invoice/subscription events).`,
+        );
+        break;
+      }
+
+      case "payment_method.attached": {
+        const paymentMethod = stripeEvent.data.object;
+        console.log(
+          `PaymentMethod ${paymentMethod.id} (${paymentMethod.type}) attached ` +
+            `to customer ${stripeId(paymentMethod.customer)}.`,
+        );
         break;
       }
 
