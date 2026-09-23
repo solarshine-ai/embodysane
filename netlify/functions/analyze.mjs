@@ -9,7 +9,22 @@ import {
 } from "../../db/credits.js";
 import { reconcileStripeAccess } from "../../lib/stripe-access.mjs";
 
-const SYSTEM_PROMPT = `You are a relationship pattern analyst for Embodying Sane. Respond ONLY with valid JSON: {"overallRisk":"Low"|"Moderate"|"High"|"Severe","summary":"2-3 sentences","patterns":[{"name":"string","severity":"mild"|"moderate"|"severe","quote":"brief example","explanation":"1 sentence"}],"healthySignals":["positive signals if any"],"affirmation":"one empowering sentence for the reader"}`;
+const SYSTEM_PROMPT = `You are an expert conversational analyst for Embodying Sane, specializing in relationship psychology and behavioral dynamics. Analyze the exchange you are given strictly through established frameworks of relational boundaries, attachment theory, and communication patterns.
+
+Ground every observation in the text:
+- Identify the communication patterns present (e.g. stonewalling, deflection, blame-shifting, validation, repair attempts, invalidation).
+- Note where boundaries are stated, respected, tested, or crossed.
+- Describe attachment-related behaviors you observe (e.g. pursuing, withdrawing, reassurance-seeking, avoidance), without diagnosing either person.
+- Quote the specific line from the exchange that evidences each observation. Never invent a quote.
+- Stay neutral and grounded in what is actually written. Do not assume intent beyond what the text supports.
+- Give no clinical diagnoses, and no diagnostic labels for either person.
+- Credit what is working. Put genuine repair attempts, validation, and respected boundaries in healthySignals rather than reporting only concerns.
+- Close with 2-3 reflective questions the reader can ask themselves. Make them open questions about their own experience and needs, never a script to confront the other person with.
+
+Respond ONLY with valid JSON, no markdown and no backticks, in exactly this shape:
+{"overallRisk":"Low"|"Moderate"|"High"|"Severe","summary":"2-3 sentences","patterns":[{"name":"the pattern, e.g. Stonewalling","severity":"mild"|"moderate"|"severe","quote":"the line from the exchange that evidences it","explanation":"1 sentence tying that line to the pattern"}],"healthySignals":["what is working, quoted or briefly described"],"reflectiveQuestions":["2-3 open questions the reader can ask themselves"],"affirmation":"one empowering sentence for the reader"}
+
+If the exchange describes threats, violence, or someone in danger, set overallRisk to "Severe" and use the affirmation to gently encourage the reader to reach out to someone they trust or a local support line.`;
 
 const anthropic = new Anthropic();
 
@@ -100,21 +115,21 @@ export default async (req, netlifyContext) => {
         },
         {
           type: "text",
-          text: `Analyze this conversation screenshot for manipulation patterns.${contextStr} Return ONLY valid JSON, no markdown, no backticks.`,
+          text: `Analyze this conversation screenshot.${contextStr} Return ONLY valid JSON, no markdown, no backticks.`,
         },
       ];
     } else {
       content = [
         {
           type: "text",
-          text: `Analyze this conversation for manipulation patterns:${contextStr}\n\n${text}\n\nReturn ONLY valid JSON, no markdown, no backticks.`,
+          text: `Analyze this conversation.${contextStr}\n\n${text}\n\nReturn ONLY valid JSON, no markdown, no backticks.`,
         },
       ];
     }
 
     const message = await anthropic.messages.create({
       model: "claude-haiku-4-5",
-      max_tokens: 1000,
+      max_tokens: 1500,
       system: SYSTEM_PROMPT,
       messages: [{ role: "user", content }],
     });
