@@ -17,14 +17,14 @@ gtag('js', new Date());
 gtag('config', 'G-33VLSPHTJC');
 </script>
 <title>Embodying Sane | Relationship Empowerment & Support</title>
-<meta name="description" content="Embodying Sane helps individuals navigate, track, and heal from complex relationships with tools, diary logs, and boundary setting exercises."/>
+<meta name="description" content="Embodying Sane: self discovery tests, an AI conversation analyzer that reads communication patterns and boundaries, and a private diary to track what you notice."/>
 <meta name="keywords" content="relationship self discovery quiz, attachment style quiz, love language test, gaslighting test, am I being gaslit, toxic relationship test, people pleaser test, boundary test, manipulation patterns, emotional abuse awareness, trauma healing, relationship pattern analyzer"/>
 <meta name="author" content="Embody-Tech-AI LLC"/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://embodysane.com"/>
 <!-- Open Graph for social sharing -->
 <meta property="og:title" content="Embodying Sane | Relationship & Self-Discovery Quizzes"/>
-<meta property="og:description" content="Take our relationship pattern analyzer to identify manipulation patterns. Free attachment style quiz, love language test, gaslighting test and more."/>
+<meta property="og:description" content="Paste a conversation and see the communication patterns, boundaries, and attachment behaviors in it, with the lines quoted as evidence. Plus free attachment style, love language, and boundary checks."/>
 <meta property="og:url" content="https://embodysane.com"/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="Embodying Sane"/>
@@ -415,7 +415,7 @@ textarea{resize:vertical}
   <div id="analyzer-pick">
     <div class="card" style="text-align:center;padding:30px 20px">
       <div style="display:flex;justify-content:center;margin-bottom:16px" id="analyzer-sun"></div>
-      <p style="color:#9d93b8;font-size:14px;line-height:1.75;margin-bottom:26px">Upload a screenshot or paste your conversation. Tell us what's happening and our AI will identify manipulation patterns.</p>
+      <p style="color:#9d93b8;font-size:14px;line-height:1.75;margin-bottom:26px">Upload a screenshot or paste your conversation. Tell us what's happening and our AI will name the communication patterns and boundaries at play, quote the lines it drew from, and close with questions to sit with.</p>
       <button class="btn btn-gold" onclick="showAnalyzerMode('photo')">📷  Upload Screenshot</button>
       <button class="btn btn-outline" onclick="showAnalyzerMode('paste')">Paste Conversation Text</button>
     </div>
@@ -1244,9 +1244,10 @@ function showAnalysisResult(result){
   const rc=riskColor(result.overallRisk);
   const pHTML=result.patterns?.length>0?`<div class="card" style="padding:20px"><span class="lbl">Patterns Detected</span>${result.patterns.map(p=>`<div class="pattern-item" style="border-left-color:${sevColor(p.severity)}"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="color:#f0eafa;font-size:13px">${p.name}</span><span style="padding:2px 8px;border-radius:10px;font-size:10px;background:${sevColor(p.severity)}22;color:${sevColor(p.severity)};text-transform:uppercase">${p.severity}</span></div>${p.quote?`<p style="color:#c9a84c;font-size:12px;font-style:italic;margin-bottom:4px">"${p.quote}"</p>`:''}<p style="color:#7a6f98;font-size:12px;line-height:1.6">${p.explanation}</p></div>`).join('')}</div>`:'';
   const hHTML=result.healthySignals?.length>0?`<div class="card" style="padding:18px 20px"><span class="lbl">Healthy Signals</span>${result.healthySignals.map(s=>`<p style="color:#9d93b8;font-size:13px;line-height:1.6;margin-bottom:4px">✓ ${s}</p>`).join('')}</div>`:'';
+  const qHTML=result.reflectiveQuestions?.length>0?`<div class="card" style="padding:18px 20px"><span class="lbl">Questions To Sit With</span>${result.reflectiveQuestions.map((q,i)=>`<div style="display:flex;gap:10px;margin-bottom:10px"><span style="color:#c9a84c;font-size:13px;flex-shrink:0">${String(i+1).padStart(2,'0')}</span><p style="color:#c8bfe0;font-size:13px;line-height:1.7">${q}</p></div>`).join('')}</div>`:'';
   const aHTML=result.affirmation?`<div class="card" style="text-align:center;padding:18px 20px"><span class="lbl">For You</span><p style="color:#f0eafa;font-size:15px;font-style:italic;line-height:1.75">"${result.affirmation}"</p></div>`:'';
   document.getElementById('analyzer-result').style.display='block';
-  document.getElementById('analyzer-result').innerHTML=`<div class="card" style="text-align:center;padding:24px 20px"><span class="lbl">Overall Risk Level</span><div class="risk-badge" style="border:1.5px solid ${rc};background:${rc}18;color:${rc}">${result.overallRisk}</div><p style="color:#9d93b8;font-size:14px;line-height:1.75">${result.summary}</p></div>${pHTML}${hHTML}${aHTML}<button class="btn btn-gold" onclick="saveAnalysis()">Save to Diary</button><button class="btn btn-outline" onclick="resetAnalyzer()">Analyze Another</button>`;
+  document.getElementById('analyzer-result').innerHTML=`<div class="card" style="text-align:center;padding:24px 20px"><span class="lbl">Overall Risk Level</span><div class="risk-badge" style="border:1.5px solid ${rc};background:${rc}18;color:${rc}">${result.overallRisk}</div><p style="color:#9d93b8;font-size:14px;line-height:1.75">${result.summary}</p></div>${pHTML}${hHTML}${qHTML}${aHTML}<button class="btn btn-gold" onclick="saveAnalysis()">Save to Diary</button><button class="btn btn-outline" onclick="resetAnalyzer()">Analyze Another</button>`;
 }
 function saveAnalysis(){if(currentAnalysisResult){addDiaryEntry({type:'analysis',result:currentAnalysisResult,date:fmtDate()});}resetAnalyzer();goTo('diary');}
 
@@ -1285,7 +1286,8 @@ function renderDiary(){
       fullContent=`<p style="color:${e.result.color};font-size:15px;margin-bottom:8px">${e.result.level}</p><p style="color:#9d93b8;font-size:13px;line-height:1.7;margin-bottom:10px">${e.result.msg}</p><p style="color:#7a6f98;font-size:12px;line-height:1.7">${e.result.detail||''}</p>${tags}`;
     }else if(e.type==='analysis'){
       preview=`<p style="color:${riskColor(e.result?.overallRisk)};font-size:14px;margin-bottom:4px">${e.result?.overallRisk} Risk</p><p style="color:#7a6f98;font-size:12px;line-height:1.6">${(e.result?.summary||'').slice(0,80)}…</p>`;
-      fullContent=`<p style="color:${riskColor(e.result?.overallRisk)};font-size:15px;margin-bottom:8px">${e.result?.overallRisk} Risk</p><p style="color:#9d93b8;font-size:13px;line-height:1.7;margin-bottom:12px">${e.result?.summary||''}</p>${e.result?.affirmation?`<p style="color:#c9a84c;font-size:13px;font-style:italic;line-height:1.7">"${e.result.affirmation}"</p>`:''}`;
+      const dq=e.result?.reflectiveQuestions?.length>0?`<div style="margin-bottom:12px"><span class="lbl" style="margin-bottom:6px">Questions To Sit With</span>${e.result.reflectiveQuestions.map((q,i)=>`<div style="display:flex;gap:10px;margin-bottom:7px"><span style="color:#c9a84c;font-size:12px;flex-shrink:0">${String(i+1).padStart(2,'0')}</span><p style="color:#c8bfe0;font-size:12px;line-height:1.7">${q}</p></div>`).join('')}</div>`:'';
+      fullContent=`<p style="color:${riskColor(e.result?.overallRisk)};font-size:15px;margin-bottom:8px">${e.result?.overallRisk} Risk</p><p style="color:#9d93b8;font-size:13px;line-height:1.7;margin-bottom:12px">${e.result?.summary||''}</p>${dq}${e.result?.affirmation?`<p style="color:#c9a84c;font-size:13px;font-style:italic;line-height:1.7">"${e.result.affirmation}"</p>`:''}`;
     }else{
       preview=`<p style="color:#9d93b8;font-size:13px;line-height:1.7">${e.text.length>90?e.text.slice(0,90)+'…':e.text}</p>`;
       fullContent=`<p style="color:#9d93b8;font-size:14px;line-height:1.8">${e.text}</p>`;
