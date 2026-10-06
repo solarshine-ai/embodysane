@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node --check auth.js && node scripts/check-inline-script.mjs",
+    "test": "node --input-type=module --check < auth.js && node scripts/check-inline-script.mjs",
     "verify:stripe": "node scripts/check-stripe-config.mjs",
     "setup:credit-packs": "node scripts/setup-credit-packs.mjs"
   },
