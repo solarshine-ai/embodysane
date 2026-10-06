@@ -210,6 +210,7 @@ src="https://www.facebook.com/tr?id=4178928338907827&ev=PageView&noscript=1"
     <form id="auth-reset-form" onsubmit="submitNewPassword(event)" style="display:none">
       <input id="auth-new-password" class="auth-input" type="password" autocomplete="new-password" placeholder="New password" minlength="8" required>
       <button class="btn btn-gold" type="submit">Save New Password</button>
+      <button class="btn btn-ghost" type="button" onclick="skipNewPassword()">Skip for Now</button>
     </form>
     <p id="auth-message" style="display:none;font-size:12px;line-height:1.6;text-align:center;margin-top:14px"></p>
     <p style="color:#5f5678;font-size:10px;line-height:1.6;text-align:center;margin-top:16px">Your account email connects your Stripe subscription and private app data.</p>
