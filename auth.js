@@ -5,7 +5,6 @@ import {
   login,
   logout,
   onAuthChange,
-  requestPasswordRecovery,
   signup,
   updateUser,
 } from "/assets/vendor/netlify-identity.js";
@@ -176,7 +175,12 @@ const setBusy = (busy) => {
 };
 
 const authErrorMessage = (error) => {
-  if (error instanceof AuthError && error.status === 401) return "That email or password was not recognized.";
+  if (error instanceof AuthError && /confirm/i.test(error.message)) {
+    return "Your email is not confirmed yet. Tap Forgot your password? to get a link that confirms it and signs you in.";
+  }
+  if (error instanceof AuthError && (error.status === 400 || error.status === 401) && authMode !== "signup") {
+    return "No account matches that email and password. Tap Forgot your password? to get a sign-in link by email (it also creates your account if you do not have one yet).";
+  }
   if (error instanceof AuthError && error.status === 422) return "Check the email and password, then try again.";
   return error instanceof Error ? error.message : "Something went wrong. Please try again.";
 };
@@ -305,7 +309,16 @@ const sendPasswordReset = async () => {
   }
   setBusy(true);
   try {
-    await requestPasswordRecovery(email);
+    // Netlify Identity silently ignores recovery requests for emails with no
+    // account, so the reset would never arrive. The magic-link endpoint creates
+    // the account first when needed, then sends the same recovery email.
+    const response = await fetch("/api/auth/magic-link", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || "Unable to send the reset link");
     localStorage.setItem("es_password_reset_requested", "true");
     setMessage("Check your email for the password reset link.", "#4cc9a8");
   } catch (error) {
@@ -322,6 +335,12 @@ const showPasswordReset = () => {
   document.getElementById("auth-main-forms").style.display = "none";
   document.getElementById("auth-reset-form").style.display = "block";
   setMessage("Choose a new password for your account.", "#c9a84c");
+};
+
+const skipNewPassword = () => {
+  localStorage.removeItem("es_password_reset_requested");
+  closeAuthModal();
+  updateAuthUi();
 };
 
 const submitNewPassword = async (event) => {
@@ -412,10 +431,17 @@ const initializeAuth = async () => {
     const callback = await handleAuthCallback();
     currentUser = callback?.user || (await getUser());
     if (currentUser) await hydrateAccount();
-    if (callback?.type === "recovery" && localStorage.getItem("es_password_reset_requested")) {
-      showPasswordReset();
-    } else if (callback?.type === "recovery") {
-      setTimeout(() => showAuthModal("login", "Your email link signed you in successfully."), 0);
+    // Email links are often opened in a different browser than the one that
+    // requested them (e.g. a mail app's in-app browser), so the password form is
+    // offered on every recovery link rather than only when a local flag exists.
+    if (callback?.type === "recovery") {
+      const requestedReset = localStorage.getItem("es_password_reset_requested");
+      setTimeout(() => {
+        showPasswordReset();
+        if (!requestedReset) {
+          setMessage("You are signed in. Set a password to sign in with email and password next time, or skip.", "#4cc9a8");
+        }
+      }, 0);
     } else if (callback?.type === "confirmation") {
       setTimeout(() => showAuthModal("login", "Your email is confirmed and you are signed in."), 0);
     }
@@ -434,6 +460,7 @@ window.submitMagicLink = submitMagicLink;
 window.sendPasswordReset = sendPasswordReset;
 window.showPasswordReset = showPasswordReset;
 window.submitNewPassword = submitNewPassword;
+window.skipNewPassword = skipNewPassword;
 window.signOut = signOut;
 window.openStripeCheckout = openStripeCheckout;
 window.queueAccountSync = queueAccountSync;
