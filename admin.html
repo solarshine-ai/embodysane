@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Owner Admin · Embodying Sane</title>
+<script type="importmap">{"imports":{"gotrue-js":"/assets/vendor/gotrue.js"}}</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#07091a;color:#f0eafa;font-family:Georgia,'Times New Roman',serif;min-height:100vh;padding:28px 18px 60px}
+.wrap{max-width:1100px;margin:0 auto}
+a{color:#c9a84c}
+.lbl{display:block;color:#c9a84c;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+h1{font-size:26px;font-weight:400;margin-bottom:4px}
+h2{font-size:18px;font-weight:400;margin-bottom:12px}
+.muted{color:#9d93b8;font-size:13px;line-height:1.7}
+.card{background:#0d1230;border:1px solid rgba(201,168,76,0.15);border-radius:16px;padding:20px;margin-top:16px}
+.status{display:flex;gap:12px;align-items:flex-start}
+.dot{width:12px;height:12px;border-radius:50%;flex:none;margin-top:5px}
+.ok{background:#4cc9a8}.bad{background:#c94c6a}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:16px}
+.tile{background:#0d1230;border:1px solid rgba(201,168,76,0.15);border-radius:14px;padding:16px}
+.tile .n{font-size:28px;color:#f0eafa}
+.tile .t{color:#9d93b8;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-top:4px}
+button,.btn{font-family:Arial,sans-serif;background:linear-gradient(135deg,#6b2580,#c9a84c);border:none;border-radius:10px;padding:10px 16px;color:#07091a;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+button.ghost{background:none;border:1px solid rgba(201,168,76,0.35);color:#e8c96a}
+button:disabled{opacity:0.5;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filters button{background:none;border:1px solid rgba(201,168,76,0.25);color:#9d93b8}
+.filters button.active{background:rgba(201,168,76,0.18);color:#f0eafa}
+.tablewrap{overflow-x:auto;margin-top:12px}
+table{width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:12px}
+th{text-align:left;color:#c9a84c;font-weight:600;letter-spacing:1px;text-transform:uppercase;font-size:10px;padding:8px;border-bottom:1px solid rgba(201,168,76,0.2);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,0.05);vertical-align:top;color:#d8d0ea}
+td.email{color:#f0eafa;overflow-wrap:anywhere;min-width:180px}
+.pill{display:inline-block;border-radius:20px;padding:2px 9px;font-size:10px;margin:0 4px 4px 0;white-space:nowrap}
+.p-green{background:rgba(76,201,168,0.15);color:#4cc9a8}
+.p-red{background:rgba(201,76,106,0.15);color:#e88aa0}
+.p-gold{background:rgba(201,168,76,0.15);color:#e8c96a}
+.p-violet{background:rgba(157,147,184,0.15);color:#c4bbdf}
+td button{padding:6px 10px;font-size:10px;margin:0 4px 4px 0}
+input{background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:11px 13px;color:#f0eafa;font-size:14px;width:100%;margin-bottom:10px}
+ol{margin:10px 0 0 20px;color:#d8d0ea;font-size:13px;line-height:1.9}
+code{background:rgba(255,255,255,0.07);padding:1px 6px;border-radius:5px;font-size:12px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0d1230;border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:12px 18px;font-size:13px;display:none;max-width:90%}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="lbl">Embodying Sane</span>
+  <h1>Owner Admin</h1>
+  <p class="muted">Everyone who has an account, pays, joined the inner circle or took a quiz, plus every email the app has sent.</p>
+
+  <div id="signin" class="card" style="display:none;max-width:420px">
+    <h2>Sign in as the owner</h2>
+    <p class="muted" id="signin-msg" style="margin-bottom:12px">Use your owner email.</p>
+    <input id="si-email" type="email" placeholder="Owner email" autocomplete="email">
+    <input id="si-password" type="password" placeholder="Password" autocomplete="current-password">
+    <div class="row">
+      <button id="si-login">Sign In</button>
+      <button id="si-link" class="ghost">Email Me a Sign-In Link</button>
+    </div>
+  </div>
+
+  <div id="app" style="display:none">
+    <div id="email-status" class="card"></div>
+    <div id="tiles" class="tiles"></div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <h2 style="margin:0">People</h2>
+        <div class="row">
+          <button class="ghost" id="export">Export CSV</button>
+          <button class="ghost" id="refresh">Refresh</button>
+        </div>
+      </div>
+      <div class="row filters" id="filters" style="margin-top:12px"></div>
+      <div class="tablewrap"><table id="people"></table></div>
+    </div>
+
+    <div class="card">
+      <h2>Email history</h2>
+      <p class="muted">The last 200 emails the app tried to send, and whether each one went out.</p>
+      <div class="tablewrap"><table id="emails"></table></div>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script type="module">
+import { getUser, login } from "/assets/vendor/netlify-identity.js";
+
+const $ = (id) => document.getElementById(id);
+let state = null;
+let filter = "all";
+
+const toast = (text) => {
+  const el = $("toast");
+  el.textContent = text;
+  el.style.display = "block";
+  clearTimeout(toast.t);
+  toast.t = setTimeout(() => (el.style.display = "none"), 4500);
+};
+
+// Builds DOM nodes with textContent only, so names and emails typed by
+// visitors can never inject markup into this page.
+const el = (tag, attrs = {}, ...children) => {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(attrs)) {
+    if (key === "onclick") node.addEventListener("click", value);
+    else if (key === "class") node.className = value;
+    else node.setAttribute(key, value);
+  }
+  for (const child of children.flat()) {
+    if (child === null || child === undefined || child === false) continue;
+    node.append(child instanceof Node ? child : document.createTextNode(String(child)));
+  }
+  return node;
+};
+const pill = (text, tone) => el("span", { class: `pill p-${tone}` }, text);
+const date = (value) => (value ? new Date(value).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "");
+const dateTime = (value) => (value ? new Date(value).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "");
+
+const FILTERS = [
+  ["all", "Everyone", () => true],
+  ["subscribers", "Paying", (p) => p.subscription?.active],
+  ["accounts", "Accounts", (p) => p.identityUserId],
+  ["unconfirmed", "Stuck / unconfirmed", (p) => p.identityUserId && !p.emailConfirmed],
+  ["inner", "Inner circle", (p) => p.innerCircle],
+  ["quiz", "Quiz takers", (p) => p.quizTaker],
+];
+
+const sendLink = async (email, button) => {
+  button.disabled = true;
+  const res = await fetch("/api/auth/magic-link", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, purpose: "signin" }),
+  });
+  const data = await res.json().catch(() => ({}));
+  button.disabled = false;
+  toast(res.ok ? `Sign-in link sent to ${email}.` : data.error || "Could not send the link.");
+  load();
+};
+
+const confirmUser = async (userId, button) => {
+  button.disabled = true;
+  const res = await fetch("/api/admin", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "confirm", userId }),
+  });
+  toast(res.ok ? "Account confirmed. They can now sign in with their password." : "Could not confirm the account.");
+  load();
+};
+
+const renderStatus = () => {
+  const { brevo, owner } = state;
+  const box = $("email-status");
+  box.replaceChildren();
+  if (brevo.ok) {
+    box.append(
+      el("div", { class: "status" },
+        el("span", { class: "dot ok" }),
+        el("div", {},
+          el("h2", { style: "margin-bottom:4px" }, "Email is working"),
+          el("p", { class: "muted" }, `All app email goes out through Brevo from ${brevo.sender}. Alerts go to ${owner.join(", ")}.`),
+          el("div", { class: "row", style: "margin-top:12px" },
+            el("button", { class: "ghost", onclick: testEmail }, "Send me a test email")))),
+    );
+    return;
+  }
+  box.append(
+    el("div", { class: "status" },
+      el("span", { class: "dot bad" }),
+      el("div", {},
+        el("h2", { style: "margin-bottom:4px" }, "Email is not working yet"),
+        el("p", { class: "muted" }, brevo.error),
+        el("p", { class: "muted", style: "margin-top:10px" }, "Until this is fixed, no sign-in links, quiz results, welcome emails or alerts can be sent. To fix it:"),
+        el("ol", {},
+          el("li", {}, "Sign in to Brevo (brevo.com) and open the menu under your name, then SMTP & API, then the API Keys tab."),
+          el("li", {}, "Click Generate a new API key, name it embodysane, and copy it. It must start with xkeysib-. A key starting with xsmtpsib- is an SMTP key and will not work here."),
+          el("li", {}, "In Netlify, open the embodysane project, then Project configuration, Environment variables. Edit EMAIL_API_KEY, paste the new key, tick Contains secret values, and save."),
+          el("li", {}, "In Netlify, open Deploys and click Trigger deploy, then Deploy project. Come back here after a minute and refresh.")),
+        el("div", { class: "row", style: "margin-top:12px" },
+          el("button", { class: "ghost", onclick: load }, "Check again")))),
+  );
+};
+
+const testEmail = async (event) => {
+  event.target.disabled = true;
+  const res = await fetch("/api/admin", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "test-email" }),
+  });
+  const data = await res.json().catch(() => ({}));
+  event.target.disabled = false;
+  toast(res.ok ? `Test email sent to ${data.to}. Check your inbox (and spam).` : `Test failed: ${data.error || res.status}`);
+  load();
+};
+
+const renderTiles = () => {
+  const t = state.totals;
+  $("tiles").replaceChildren(
+    ...[
+      [t.activeSubscribers, "Paying subscribers"],
+      [t.accounts, "Accounts"],
+      [t.unconfirmed, "Stuck / unconfirmed"],
+      [t.innerCircle, "Inner circle"],
+      [t.quizTakers, "Quiz takers"],
+      [t.emailsFailed, "Failed emails"],
+    ].map(([n, label]) => el("div", { class: "tile" }, el("div", { class: "n" }, n), el("div", { class: "t" }, label))),
+  );
+};
+
+const renderPeople = () => {
+  $("filters").replaceChildren(
+    ...FILTERS.map(([key, label, test]) =>
+      el("button", { class: filter === key ? "active" : "", onclick: () => { filter = key; renderPeople(); } },
+        `${label} (${state.people.filter(test).length})`)),
+  );
+  const test = FILTERS.find(([key]) => key === filter)[2];
+  const rows = state.people.filter(test);
+  const table = $("people");
+  table.replaceChildren(
+    el("thead", {}, el("tr", {}, ["Email", "Status", "Joined", "Last sign-in", "Analyses", "Actions"].map((h) => el("th", {}, h)))),
+    el("tbody", {},
+      rows.length === 0
+        ? el("tr", {}, el("td", { colspan: "6", class: "muted" }, "Nobody here yet."))
+        : rows.map((p) =>
+            el("tr", {},
+              el("td", { class: "email" }, p.email, p.name ? el("div", { class: "muted", style: "font-size:11px" }, p.name) : null),
+              el("td", {},
+                p.subscription?.active ? pill("Paying", "green") : p.subscription ? pill(`Stripe: ${p.subscription.status}`, "red") : null,
+                p.founderAccess ? pill("Founder", "gold") : null,
+                p.identityUserId ? (p.emailConfirmed ? pill("Account", "violet") : pill("Unconfirmed", "red")) : pill("No account", "violet"),
+                p.innerCircle ? pill("Inner circle", "gold") : null,
+                p.lastQuiz ? pill(`Quiz: ${p.lastQuiz}`, "violet") : null),
+              el("td", {}, date(p.firstSeenAt)),
+              el("td", {}, p.lastSignInAt ? date(p.lastSignInAt) : "Never"),
+              el("td", {}, p.analysesUsed ?? ""),
+              el("td", {},
+                p.identityUserId && !p.emailConfirmed
+                  ? el("button", { class: "ghost", onclick: (e) => confirmUser(p.identityUserId, e.target) }, "Confirm")
+                  : null,
+                el("button", { class: "ghost", onclick: (e) => sendLink(p.email, e.target) }, "Send sign-in link")))),
+    ),
+  );
+};
+
+const renderEmails = () => {
+  $("emails").replaceChildren(
+    el("thead", {}, el("tr", {}, ["When", "To", "Type", "Subject", "Result"].map((h) => el("th", {}, h)))),
+    el("tbody", {},
+      state.emails.length === 0
+        ? el("tr", {}, el("td", { colspan: "5", class: "muted" }, "No emails yet."))
+        : state.emails.map((e) =>
+            el("tr", {},
+              el("td", { style: "white-space:nowrap" }, dateTime(e.createdAt)),
+              el("td", { class: "email" }, e.toEmail),
+              el("td", {}, e.kind),
+              el("td", {}, e.subject),
+              el("td", {}, e.status === "sent" ? pill("Sent", "green") : pill("Failed", "red"),
+                e.error ? el("div", { class: "muted", style: "font-size:11px" }, e.error) : null)))),
+  );
+};
+
+const csvCell = (value) => {
+  const text = String(value ?? "");
+  // Leading = + - @ would be run as a formula by spreadsheet apps.
+  const safe = /^[=+\-@]/.test(text) ? `'${text}` : text;
+  return /[",\n]/.test(safe) ? `"${safe.replace(/"/g, '""')}"` : safe;
+};
+
+$("export").addEventListener("click", () => {
+  const header = ["email", "name", "paying", "subscription_status", "has_account", "email_confirmed", "inner_circle", "quiz_taker", "last_quiz", "first_seen", "last_sign_in", "analyses_used"];
+  const lines = state.people.map((p) =>
+    [p.email, p.name, p.subscription?.active ? "yes" : "no", p.subscription?.status, p.identityUserId ? "yes" : "no",
+      p.emailConfirmed ? "yes" : "no", p.innerCircle ? "yes" : "no", p.quizTaker ? "yes" : "no", p.lastQuiz,
+      p.firstSeenAt, p.lastSignInAt, p.analysesUsed].map(csvCell).join(","));
+  const blob = new Blob([[header.join(","), ...lines].join("\n")], { type: "text/csv" });
+  const a = el("a", { href: URL.createObjectURL(blob), download: `embodysane-people-${new Date().toISOString().slice(0, 10)}.csv` });
+  document.body.append(a);
+  a.click();
+  a.remove();
+});
+$("refresh").addEventListener("click", () => load());
+
+const showSignIn = (message) => {
+  $("app").style.display = "none";
+  $("signin").style.display = "block";
+  if (message) $("signin-msg").textContent = message;
+};
+
+$("si-login").addEventListener("click", async () => {
+  try {
+    await login($("si-email").value.trim(), $("si-password").value);
+    load();
+  } catch (error) {
+    $("signin-msg").textContent = "That email and password didn't match. Use Email Me a Sign-In Link instead.";
+  }
+});
+$("si-link").addEventListener("click", async () => {
+  const email = $("si-email").value.trim();
+  if (!email) { $("signin-msg").textContent = "Enter your email first."; return; }
+  const res = await fetch("/api/auth/magic-link", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, purpose: "signin" }),
+  });
+  const data = await res.json().catch(() => ({}));
+  $("signin-msg").textContent = res.ok
+    ? "Check your email. The link opens the app signed in; then come back to embodysane.com/admin."
+    : data.error || "Could not send the link.";
+});
+
+async function load() {
+  await getUser();
+  const res = await fetch("/api/admin", { headers: { Accept: "application/json" } });
+  if (res.status === 401) return showSignIn();
+  if (res.status === 403) return showSignIn("You're signed in, but not with the owner email. Log out in the app and sign in with the owner email.");
+  if (!res.ok) return toast("Could not load the admin data. Try Refresh.");
+  state = await res.json();
+  $("signin").style.display = "none";
+  $("app").style.display = "block";
+  renderStatus();
+  renderTiles();
+  renderPeople();
+  renderEmails();
+}
+
+load();
+</script>
+</body>
+</html>
