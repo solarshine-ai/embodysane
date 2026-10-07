@@ -2,10 +2,10 @@ import {
   AuthError,
   getUser,
   handleAuthCallback,
+  hydrateSession,
   login,
   logout,
   onAuthChange,
-  signup,
   updateUser,
 } from "/assets/vendor/netlify-identity.js";
 
@@ -198,6 +198,8 @@ const updateAuthUi = () => {
   if (signedOut) signedOut.style.display = signedIn ? "none" : "block";
   if (signedInCard) signedInCard.style.display = signedIn ? "block" : "none";
   if (signedIn && accountState) setSyncStatus("Saved across devices", "#4cc9a8");
+  const adminLink = document.getElementById("admin-link");
+  if (adminLink) adminLink.style.display = signedIn && accountState?.user?.isOwner ? "block" : "none";
 };
 
 const setAuthMode = (mode) => {
@@ -211,10 +213,17 @@ const setAuthMode = (mode) => {
   document.getElementById("auth-tab-signup")?.classList.toggle("active", signupMode);
   const nameRow = document.getElementById("auth-name-row");
   if (nameRow) nameRow.style.display = signupMode ? "block" : "none";
+  // New accounts are created from an emailed link, which proves the address is
+  // theirs; they choose a password after opening it.
+  const passwordInput = document.getElementById("auth-password");
+  if (passwordInput) {
+    passwordInput.style.display = signupMode ? "none" : "block";
+    passwordInput.required = !signupMode;
+  }
   const passwordButton = document.getElementById("auth-password-submit");
-  if (passwordButton) passwordButton.textContent = signupMode ? "Create Account" : "Sign In";
-  const magicButton = document.getElementById("auth-magic-submit");
-  if (magicButton) magicButton.textContent = signupMode ? "Create Account With Email Link" : "Email Me a Sign-In Link";
+  if (passwordButton) passwordButton.textContent = signupMode ? "Email Me My Account Link" : "Sign In";
+  const magicArea = document.getElementById("auth-magic-area");
+  if (magicArea) magicArea.style.display = signupMode ? "none" : "block";
   const forgot = document.getElementById("auth-forgot");
   if (forgot) forgot.style.display = signupMode ? "none" : "inline-block";
   setMessage("");
@@ -258,20 +267,45 @@ const submitPasswordAuth = async (event) => {
   event.preventDefault();
   const email = document.getElementById("auth-email").value.trim();
   const password = document.getElementById("auth-password").value;
-  const name = document.getElementById("auth-name")?.value.trim();
+  if (authMode === "signup") {
+    await sendSignInLink(email, "signup");
+    return;
+  }
   setBusy(true);
-  setMessage(authMode === "signup" ? "Creating your account…" : "Signing you in…");
+  setMessage("Signing you in…");
   try {
-    if (authMode === "signup") {
-      const user = await signup(email, password, name ? { full_name: name } : undefined);
-      if (!user.emailVerified) {
-        setMessage("Check your email to confirm your account, then return here to sign in.", "#4cc9a8");
-        return;
-      }
-      await afterLogin(user);
-    } else {
-      await afterLogin(await login(email, password));
-    }
+    await afterLogin(await login(email, password));
+  } catch (error) {
+    setMessage(authErrorMessage(error), "#c94c6a");
+  } finally {
+    setBusy(false);
+  }
+};
+
+const linkSentMessage = {
+  signin: "Check your email for your sign-in link. It can take a minute; check spam too.",
+  signup: "Check your email and tap the link to finish creating your account. It can take a minute; check spam too.",
+  reset: "Check your email for a link to sign in and choose a new password. It can take a minute; check spam too.",
+};
+
+const sendSignInLink = async (email, purpose) => {
+  if (!email) {
+    setMessage("Enter your email first.", "#c94c6a");
+    return;
+  }
+  setBusy(true);
+  setMessage("Sending your secure email link…");
+  try {
+    const response = await fetch("/api/auth/magic-link", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, purpose }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || "Unable to send the email link");
+    if (purpose === "reset") localStorage.setItem("es_password_reset_requested", "true");
+    else localStorage.removeItem("es_password_reset_requested");
+    setMessage(linkSentMessage[purpose], "#4cc9a8");
   } catch (error) {
     setMessage(authErrorMessage(error), "#c94c6a");
   } finally {
@@ -281,51 +315,33 @@ const submitPasswordAuth = async (event) => {
 
 const submitMagicLink = async (event) => {
   event.preventDefault();
-  const email = document.getElementById("auth-email").value.trim();
-  setBusy(true);
-  setMessage("Preparing your secure email link…");
-  try {
-    const response = await fetch("/api/auth/magic-link", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Unable to send sign-in link");
-    localStorage.removeItem("es_password_reset_requested");
-    setMessage("Check your email for a secure sign-in link. It works for new and returning accounts.", "#4cc9a8");
-  } catch (error) {
-    setMessage(authErrorMessage(error), "#c94c6a");
-  } finally {
-    setBusy(false);
-  }
+  await sendSignInLink(document.getElementById("auth-email").value.trim(), "signin");
 };
 
 const sendPasswordReset = async () => {
-  const email = document.getElementById("auth-email").value.trim();
-  if (!email) {
-    setMessage("Enter your email first.", "#c94c6a");
-    return;
+  await sendSignInLink(document.getElementById("auth-email").value.trim(), "reset");
+};
+
+/**
+ * Redeems a #signin_token=... link from our own Brevo email. The server sets
+ * the session cookies; hydrateSession() turns them into a browser session.
+ */
+const redeemSignInLink = async () => {
+  const match = /[#&]signin_token=([^&]+)/.exec(window.location.hash);
+  if (!match) return null;
+  history.replaceState(null, "", window.location.pathname + window.location.search);
+  const response = await fetch("/api/auth/verify-link", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token: decodeURIComponent(match[1]) }),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    setTimeout(() => showAuthModal("login", data.error || "That link didn't work. Request a new one."), 0);
+    return null;
   }
-  setBusy(true);
-  try {
-    // Netlify Identity silently ignores recovery requests for emails with no
-    // account, so the reset would never arrive. The magic-link endpoint creates
-    // the account first when needed, then sends the same recovery email.
-    const response = await fetch("/api/auth/magic-link", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || "Unable to send the reset link");
-    localStorage.setItem("es_password_reset_requested", "true");
-    setMessage("Check your email for the password reset link.", "#4cc9a8");
-  } catch (error) {
-    setMessage(authErrorMessage(error), "#c94c6a");
-  } finally {
-    setBusy(false);
-  }
+  const user = await hydrateSession();
+  return user ? { user, purpose: data.purpose, created: data.created } : null;
 };
 
 const showPasswordReset = () => {
@@ -428,9 +444,24 @@ const refreshAccount = async () => {
 
 const initializeAuth = async () => {
   try {
-    const callback = await handleAuthCallback();
-    currentUser = callback?.user || (await getUser());
+    const linked = await redeemSignInLink();
+    const callback = linked ? null : await handleAuthCallback();
+    currentUser = linked?.user || callback?.user || (await getUser());
     if (currentUser) await hydrateAccount();
+    if (linked) {
+      const wantsReset = linked.purpose === "reset" || localStorage.getItem("es_password_reset_requested");
+      setTimeout(() => {
+        showPasswordReset();
+        setMessage(
+          wantsReset
+            ? "You are signed in. Choose your new password."
+            : linked.created
+              ? "Welcome! Your account is ready. Set a password to sign in with it next time, or skip."
+              : "You are signed in. Set a password to sign in with it next time, or skip.",
+          "#4cc9a8",
+        );
+      }, 0);
+    }
     // Email links are often opened in a different browser than the one that
     // requested them (e.g. a mail app's in-app browser), so the password form is
     // offered on every recovery link rather than only when a local flag exists.

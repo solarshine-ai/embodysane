@@ -22,6 +22,10 @@ import {
 } from "../../db/accounts.js";
 import { applyCreditPurchase } from "../../db/credits.js";
 import { saveStripeEntitlement } from "../../db/subscriptions.js";
+import { notifyOwner } from "../../lib/email.mjs";
+
+const money = (cents, currency = "usd") =>
+  typeof cents === "number" ? `${(cents / 100).toFixed(2)} ${String(currency).toUpperCase()}` : "unknown amount";
 
 const jsonResponse = (body, status = 200) =>
   Response.json(body, {
@@ -126,6 +130,12 @@ export default async (req, context) => {
               ? `Granted ${credits} analyzer credits for session ${session.id}.`
               : `Credit pack ${session.id} was already applied; ignoring replay.`,
           );
+          if (applied) {
+            await notifyOwner("Credit pack purchased", [
+              `Email: ${session.customer_details?.email || session.customer_email || "unknown"}`,
+              `${credits} analyzer credits for ${money(session.amount_total, session.currency)}`,
+            ]);
+          }
           break;
         }
 
@@ -159,6 +169,12 @@ export default async (req, context) => {
               entitlement.stripeCustomerId,
             );
           }
+        }
+        if (accessActive) {
+          await notifyOwner("New subscriber", [
+            `Email: ${entitlement.customerEmail || "unknown"}`,
+            `Paid ${money(session.amount_total, session.currency)} through Stripe checkout.`,
+          ]);
         }
         break;
       }
@@ -198,6 +214,12 @@ export default async (req, context) => {
           accessActive: false,
           ...eventMetadata,
         });
+        if (stripeEvent.type === "invoice.payment_failed") {
+          await notifyOwner("A subscription payment failed", [
+            `Email: ${invoice.customer_email || "unknown"}`,
+            `Amount due: ${money(invoice.amount_due, invoice.currency)}. Stripe retries automatically; access is paused until it succeeds.`,
+          ]);
+        }
         break;
       }
 
@@ -209,7 +231,7 @@ export default async (req, context) => {
           stripeEvent.type !== "customer.subscription.deleted" &&
           ["active", "trialing"].includes(subscription.status);
 
-        await saveStripeEntitlement({
+        const entitlement = await saveStripeEntitlement({
           stripeCustomerId: stripeId(subscription.customer),
           stripeSubscriptionId: subscription.id,
           status:
@@ -219,6 +241,21 @@ export default async (req, context) => {
           accessActive,
           ...eventMetadata,
         });
+        if (stripeEvent.type === "customer.subscription.deleted") {
+          await notifyOwner("A subscription was canceled", [
+            `Email: ${entitlement.customerEmail || "unknown"}`,
+            "Their access has ended.",
+          ]);
+        } else if (
+          stripeEvent.type === "customer.subscription.updated" &&
+          subscription.cancel_at_period_end &&
+          stripeEvent.data.previous_attributes?.cancel_at_period_end === false
+        ) {
+          await notifyOwner("A subscriber scheduled a cancellation", [
+            `Email: ${entitlement.customerEmail || "unknown"}`,
+            "They keep access until the end of the period they paid for.",
+          ]);
+        }
         break;
       }
 

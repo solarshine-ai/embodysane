@@ -202,10 +202,12 @@ src="https://www.facebook.com/tr?id=4178928338907827&ev=PageView&noscript=1"
         <button id="auth-password-submit" class="btn btn-gold" type="submit">Sign In</button>
       </form>
       <button id="auth-forgot" onclick="sendPasswordReset()" style="background:none;border:none;color:#9d93b8;font-size:11px;text-decoration:underline;width:100%;margin-top:2px">Forgot your password?</button>
-      <div class="auth-or">or use no password</div>
-      <form onsubmit="submitMagicLink(event)">
-        <button id="auth-magic-submit" class="btn btn-outline" type="submit">Email Me a Sign-In Link</button>
-      </form>
+      <div id="auth-magic-area">
+        <div class="auth-or">or use no password</div>
+        <form onsubmit="submitMagicLink(event)">
+          <button id="auth-magic-submit" class="btn btn-outline" type="submit">Email Me a Sign-In Link</button>
+        </form>
+      </div>
     </div>
     <form id="auth-reset-form" onsubmit="submitNewPassword(event)" style="display:none">
       <input id="auth-new-password" class="auth-input" type="password" autocomplete="new-password" placeholder="New password" minlength="8" required>
@@ -570,6 +572,7 @@ src="https://www.facebook.com/tr?id=4178928338907827&ev=PageView&noscript=1"
     <div id="account-signed-in" style="display:none">
       <p data-account-email style="color:#f0eafa;font-size:14px;margin-bottom:6px"></p>
       <p id="account-sync-status" style="color:#4cc9a8;font-size:11px;margin-bottom:14px">Saved across devices</p>
+      <a id="admin-link" href="/admin" class="btn btn-gold" style="display:none;text-align:center;text-decoration:none;box-sizing:border-box">Owner Admin</a>
       <button class="btn btn-outline" onclick="showAuthModal('login')">Account Options</button>
       <button class="btn btn-ghost" onclick="signOut()">Log Out</button>
     </div>
@@ -1502,16 +1505,35 @@ function downloadMyData(){
 }
 
 // ── EMAIL SIGNUP ──────────────────────────────────────────────────────────────
-function submitSignup(){
+async function submitSignup(){
   const input=document.getElementById('signup-email');
   const msg=document.getElementById('signup-msg');
+  const show=(text,color)=>{msg.textContent=text;msg.style.color=color;msg.style.display='block';};
   const email=input.value.trim();
-  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg.textContent='Please enter a valid email.';msg.style.color='#c94c6a';msg.style.display='block';return;}
-  const signups=lsGet('es_signups',[]);
-  if(signups.includes(email)){msg.textContent='You\'re already signed up!';msg.style.color='#c9a84c';msg.style.display='block';return;}
-  signups.push(email);lsSet('es_signups',signups);
-  input.value='';msg.textContent='Welcome to the inner circle.';msg.style.color='#4cc9a8';msg.style.display='block';
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){show('Please enter a valid email.','#c94c6a');return;}
+  try{
+    const res=await fetch('/api/inner-circle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(data.error||'Signup failed');
+    input.value='';
+    show(data.already?'You\'re already in the inner circle!':'Welcome to the inner circle. Check your inbox.',data.already?'#c9a84c':'#4cc9a8');
+  }catch(err){show(err.message||'That didn\'t go through. Please try again.','#c94c6a');}
 }
+
+// Inner-circle signups used to be kept only in the visitor's browser. Send any
+// left over to the server once, so returning visitors land on the real list.
+async function syncLegacySignups(){
+  const pending=lsGet('es_signups',[]);
+  if(!Array.isArray(pending)||!pending.length||lsGet('es_signups_synced',false))return;
+  try{
+    for(const email of pending.slice(0,5)){
+      const res=await fetch('/api/inner-circle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+      if(!res.ok&&res.status!==400)return;
+    }
+    lsSet('es_signups_synced',true);
+  }catch{}
+}
+if(location.protocol.startsWith('http'))setTimeout(syncLegacySignups,3000);
 
 // ── NETWORK & PROTOCOL DETECTION ─────────────────────────────────────────────
 function checkProtocol(){

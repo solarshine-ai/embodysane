@@ -7,6 +7,7 @@ import {
 } from "../../db/accounts.js";
 import { creditState, refreshSubscriberAllowance } from "../../db/credits.js";
 import { reconcileStripeAccess } from "../../lib/stripe-access.mjs";
+import { isOwner } from "../../lib/owner.mjs";
 
 const json = (body, status = 200) =>
   Response.json(body, {
@@ -67,7 +68,7 @@ export default async (req, context) => {
 
   if (req.method === "GET") {
     return json({
-      user: { id: current.user.id, email: current.user.email },
+      user: { id: current.user.id, email: current.user.email, isOwner: isOwner(current.user) },
       data: current.account.accountData,
       dataInitialized: current.account.dataInitialized,
       access: current.access,

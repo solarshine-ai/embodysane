@@ -77,3 +77,50 @@ export const creditPurchases = pgTable("credit_purchases", {
   amountCents: integer("amount_cents"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
+
+/**
+ * Everyone who handed over an email outside of creating an account: the Home
+ * screen "inner circle" signup and the "email me my result" quiz form. One row
+ * per address, so the owner sees a single list instead of one per form.
+ */
+export const emailContacts = pgTable("email_contacts", {
+  id: serial().primaryKey(),
+  email: text().notNull().unique(),
+  firstName: text("first_name"),
+  innerCircle: boolean("inner_circle").default(false).notNull(),
+  quizTaker: boolean("quiz_taker").default(false).notNull(),
+  lastQuizName: text("last_quiz_name"),
+  lastQuizResult: text("last_quiz_result"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+/**
+ * Every email the app attempts, with the outcome. Exists so a failed send is
+ * visible on the admin page instead of disappearing into function logs.
+ */
+export const emailLog = pgTable("email_log", {
+  id: serial().primaryKey(),
+  kind: text().notNull(),
+  toEmail: text("to_email").notNull(),
+  subject: text().notNull(),
+  status: text().notNull(),
+  error: text(),
+  providerMessageId: text("provider_message_id"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+/**
+ * One-time sign-in links the app emails itself through Brevo. Only a SHA-256
+ * hash of the token is stored, so a database read cannot be replayed as a
+ * login.
+ */
+export const signInTokens = pgTable("sign_in_tokens", {
+  id: serial().primaryKey(),
+  tokenHash: text("token_hash").notNull().unique(),
+  email: text().notNull(),
+  purpose: text().notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  usedAt: timestamp("used_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
